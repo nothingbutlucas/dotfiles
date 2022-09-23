@@ -1,0 +1,1 @@
+/home/lbd/dotfiles/zshrc/utils.sh

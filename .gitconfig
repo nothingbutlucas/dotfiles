@@ -1,0 +1,37 @@
+# Este es el archivo de configuración de Git por usuario.
+[user]
+	name = user
+	email = example@mail.com
+[alias]
+	ec = config --global -e
+	co = checkout
+	br = branch
+	cm = commit -m
+	cam = commit -a -m
+	st = status
+	up = !git pull --rebase --prune $@ && git submodule update --init --recursive
+	save = !git add -A && git commit -m "CHECK-POINT"
+	wip = commit -am "WIP"
+	undo = reset HEAD~1 --mixed
+	amend = commit -a --amend
+	ls = log --pretty=format:"%C(yellow)%h%Cred%d\\ %Creset%s%Cblue\\ [%cn]" --decorate
+	ll = log --pretty=format:"%C(yellow)%h%Cred%d\\ %Creset%s%Cblue\\ [%cn]" --decorate --numstat
+	lds = log --pretty=format:"%C(yellow)%h\\ %ad%Cred%d\\ %Creset%s%Cblue\\ [%cn]" --decorate --date=short
+	ld = log --pretty=format:"%C(yellow)%h\\ %ad%Cred%d\\ %Creset%s%Cblue\\ [%cn]" --decorate --date=relative
+	f = "!git ls-files | grep -i"
+	grep = grep -Ii
+	gr = grep -Ii
+	la = "!git config -l | grep alias | cut -c 7-"
+	uncommit-soft = "reset --soft HEAD^"
+	uncommit= "reset HEAD^"
+	uncommit-hard= "reset --hard HEAD^"
+
+
+[merge]
+  conflictstyle = diff3
+
+[diff]
+  colorMoved = default
+
+[init]
+	defaultBranch = main
