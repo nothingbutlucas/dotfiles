@@ -5,6 +5,7 @@ alias cd..="cd .."
 alias c="bat"
 alias ls="lsd"
 alias g="git"
+alias edit_aliases="cd ${HOME}/dotfiles/ && ls -la"
 
 # Fast tty-clock configuration
 
