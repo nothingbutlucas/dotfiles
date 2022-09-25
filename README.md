@@ -18,5 +18,15 @@ Also, I suppose someone might find it useful or come up with some ideas to impro
 
     git clone https://github.com/nothingbutlucas/dotfiles/
 
-    cp dotfiles/.zshrc . && cp dotfiles/.bashrc .
+#### Backup of your files [OptionalButNoOptional]
+
+    cp ${HOME}/.zshrc ${HOME}/.zshrc.backup
+
+    cp ${HOME}/.bashrc ${HOME}/.bashrc.backup
+
+#### Symbolic link the dotfiles
+
+    ln -s ${HOME}/dotfiles/.zshrc ${HOME}/.zshrc ${HOME}/ && ln -s dotfiles/.bashrc ${HOME}/.bashrc
+
+    ln -s ${HOME}/dotfiles/.tmux.conf ${HOME}/.tmux.conf
 
