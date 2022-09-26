@@ -19,6 +19,7 @@ alias ochentas='mpv --no-video https://youtu.be/e_Z1CawQIvo'
 alias the_clash='mpv --no-video https://youtu.be/l0Q8z1w0KGY'
 alias youtube_search='BROWSER=w3m ddgr -x -w youtube.com'
 alias jajacker_lofi='mpv --no-video https://youtu.be/QifY_BtOxR8'
+alias the_runaways='mpv --no-video https://youtu.be/cn_5WwhB_yA'
 
 # Security
 
