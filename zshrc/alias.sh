@@ -22,6 +22,7 @@ alias jajacker_lofi='mpv --no-video https://youtu.be/QifY_BtOxR8'
 alias the_runaways='mpv --no-video https://youtu.be/cn_5WwhB_yA'
 alias ameli_lens='mpv --no-video https://youtu.be/9OtQpDypvBY'
 alias fito_tercer_mundo='mpv --no-video https://youtu.be/92bu97IgE2E'
+alias hack_net='mpv --no-video https://youtu.be/BEimFoWRXCw'
 
 # Security
 
