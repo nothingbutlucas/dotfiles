@@ -136,3 +136,8 @@ alerta(){
     crontab -e
 }
 
+mv_pritty(){
+    string=$(echo $1 | sed 's/ /_/g')
+    mv $1 ${string:l}
+    e_success "Archivo renombrado a ${string:l}"
+}
