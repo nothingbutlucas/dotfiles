@@ -141,3 +141,8 @@ mv_pritty(){
     mv $1 ${string:l}
     e_success "Archivo renombrado a ${string:l}"
 }
+
+cp_and_notify(){
+    cp -rp $1 $2
+    curl -H "Title: PC" -H "tags: computer" -H "Priority: high" -d "Se copio correctamente $1 a $2" ntfy.sh/$TOPICO_CP
+}
