@@ -15,48 +15,32 @@ sudo wget -b -t 5 "https://raw.githubusercontent.com/zsh-users/zsh-autosuggestio
 sudo wget -b -t 5 "https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/plugins/jsontools/jsontools.plugin.zsh"
 sudo git clone https://github.com/zsh-users/zsh-syntax-highlighting.git
 
-
 echo -e "Ahora queda instalar la zshrc y la powerlevel10k"
 
-# Recognize if the system is a fedora like or a debian like
-
-system = $( cat /etc/os-release | grep -i "ID=" | cut -d "=" -f 2 | head -n 1 )
-
+system=$( cat /etc/os-release | grep -i "ID=" | cut -d "=" -f 2 | head -n 1 )
 
 if [ $system = "fedora" || $system = "rhel" ]; then
-    echo -e "El sistema es fedora o rhel"
-    sleep 0.5
-    echo -e "Instalando zsh..."
-    sleep 0.5
-    sudo dnf install zsh -y
-    echo -e "Instalando powerlevel10k..."
-    sleep 0.5
-    git clone --depth=1 https://github.com/romkatv/powerlevel10k.git ~/powerlevel10k
-    echo 'source ~/powerlevel10k/powerlevel10k.zsh-theme' >>~/.zshrc
-    echo -e "Instalando mpv"
-    sleep 0.5
-    sudo dnf install mpv -y
-    echo -e "Instalando youtube-dl"
-    sleep 0.5
-    sudo dnf install youtube-dl -y
+    package="dnf"
 elif [ $system = "debian" || $system = "ubuntu" ]; then
-    echo -e "El sistema es debian o ubuntu"
-    sleep 0.5
-    echo -e "Instalando zsh..."
-    sleep 0.5
-    sudo apt install zsh -y
-    echo -e "Instalando powerlevel10k..."
-    sleep 0.5
-    git clone --depth=1 https://github.com/romkatv/powerlevel10k.git ~/powerlevel10k
-    echo 'source ~/powerlevel10k/powerlevel10k.zsh-theme' >>~/.zshrc
-    echo -e "Instalando mpv"
-    sudo apt install mpv -y
-    echo -e "Instalando youtube-dl"
-    sleep 0.5
-    sudo apt install youtube-dl -y
+    package="apt"
 else
-    echo -e "No se ha podido reconocer el sistema"
+    echo -e "No se ha podido reconocer el sistema :("
     exit 1
 fi
 
+echo "El sistema es fedora o rhel"
+sleep 0.5
+echo "Instalando zsh..."
+sleep 0.5
+sudo $package install zsh -y
+echo "Instalando powerlevel10k..."
+sleep 0.5
+git clone --depth=1 https://github.com/romkatv/powerlevel10k.git ~/powerlevel10k
+echo 'source ~/powerlevel10k/powerlevel10k.zsh-theme' >>~/.zshrc
+echo -e "Instalando mpv"
+sleep 0.5
+sudo $package install mpv -y
+echo -e "Instalando youtube-dl"
+sleep 0.5
+sudo $package install youtube-dl -y
 
