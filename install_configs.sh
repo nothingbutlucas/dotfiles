@@ -55,13 +55,13 @@ function backup(){
     echo -e "Vamos a hacer un backup de tu configuración actual"
     mkdir -p ~/.config/backup
     cp ~/.zshrc ~/.config/backup/zshrc.bak > /dev/null 2>&1
-    echo -e "${grey}$ Backup realizado en ~/.config/backup/zshrc.bak${white}"
+    echo -e "Backup realizado en ~/.config/backup/zshrc.bak${white}"
     cp ~/.gitconfig ~/.config/backup/gitconfig.bak > /dev/null 2>&1
-    echo -e "${grey}$ Backup realizado en ~/.config/backup/gitconfig.bak${white}"
+    echo -e "Backup realizado en ~/.config/backup/gitconfig.bak${white}"
     cp ~/.bashrc ~/.config/backup/bashrc.bak > /dev/null 2>&1
-    echo -e "${grey}$ Backup realizado en ~/.config/backup/bashrc.bak${white}"
+    echo -e "Backup realizado en ~/.config/backup/bashrc.bak${white}"
     cp ~/.tmux.conf ~/.config/backup/tmux.conf.bak > /dev/null 2>&1
-    echo -e "${grey}$ Backup realizado en ~/.config/backup/tmux.conf.bak${white}"
+    echo -e "Backup realizado en ~/.config/backup/tmux.conf.bak${white}"
 }
 
 function dotfiles(){
@@ -71,21 +71,25 @@ function dotfiles(){
     echo -e "Instalando los dotfiles"
     sleep 0.5
     rm -rf "$HOME/.gitconfig"
-    ln -s -n "$HOME/dotfiles/.gitconfig $HOME/.gitconfig"
+    ln -s -n $HOME/dotfiles/.gitconfig $HOME/.gitconfig
     echo ".gitconfig instalado"
+    sleep 0.5
     rm -rf "$HOME/.tmux.conf"
-    ln -s -n "$HOME/dotfiles/.tmux.conf $HOME/.tmux.conf"
+    ln -s -n $HOME/dotfiles/.tmux.conf $HOME/.tmux.conf
     echo ".tmux.conf instalado"
+    sleep 0.5
     rm -rf "$HOME/.zshrc"
-    ln -s -n "$HOME/dotfiles/.zshrc $HOME/.zshrc"
+    ln -s -n $HOME/dotfiles/.zshrc $HOME/.zshrc
     echo ".zshrc instalado"
+    sleep 0.5
     rm -rf "$HOME/.bashrc"
-    ln -s -n "$HOME/dotfiles/.bashrc $HOME/.bashrc"
+    ln -s -n $HOME/dotfiles/.bashrc $HOME/.bashrc
     rm -rf "$HOME/bashrc/alias.sh"
     rm -rf "$HOME/bashrc/utils.sh"
-    ln -s -n "${HOME}/dotfiles/zshrc/alias.sh" "${HOME}/dotfiles/bashrc/alias.sh"
-    ln -s -n "${HOME}/dotfiles/zshrc/utils.sh" "${HOME}/dotfiles/bashrc/utils.sh"
+    ln -s -n ${HOME}/dotfiles/zshrc/alias.sh" "${HOME}/dotfiles/bashrc/alias.sh
+    ln -s -n ${HOME}/dotfiles/zshrc/utils.sh" "${HOME}/dotfiles/bashrc/utils.sh
     echo ".bashrc instalado"
+    sleep 0.5
 }
 
 function tmux(){
