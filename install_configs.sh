@@ -1,15 +1,16 @@
-#!/usr/bin/env sh
+#!/usr/bin/env bash
 
 grey=$(tput setaf 8)
 white=$(tput setaf 7)
 
-system=$( cat /etc/os-release | grep -i "ID=" | cut -d "=" -f 2 | head -n 1 )
+distro=$(lsb_release -is)
 
-if [[ $system = "fedora" || $system = "rhel" ]]; then
+if [[ ${distro,} = "fedora" || ${distro,} = "rhel" ]]; then
     package="dnf"
-elif [[ $system = "debian" || $system = "ubuntu" ]]; then
+elif [[ ${distro,} = "debian" || ${distro,} = "ubuntu" ]]; then
     package="apt"
 else
+    echo "$system"
     echo -e "No se ha podido reconocer el sistema :("
     exit 1
 fi
@@ -69,13 +70,19 @@ function dotfiles(){
     backup
     echo -e "Instalando los dotfiles"
     sleep 0.5
-    ln -s -n $HOME/dotfiles/.gitconfig $HOME/.gitconfig
+    rm -rf "$HOME/.gitconfig"
+    ln -s -n "$HOME/dotfiles/.gitconfig $HOME/.gitconfig"
     echo ".gitconfig instalado"
-    ln -s -n $HOME/dotfiles/.tmux.conf $HOME/.tmux.conf
+    rm -rf "$HOME/.tmux.conf"
+    ln -s -n "$HOME/dotfiles/.tmux.conf $HOME/.tmux.conf"
     echo ".tmux.conf instalado"
-    ln -s -n $HOME/dotfiles/.zshrc $HOME/.zshrc
+    rm -rf "$HOME/.zshrc"
+    ln -s -n "$HOME/dotfiles/.zshrc $HOME/.zshrc"
     echo ".zshrc instalado"
-    ln -s -n $HOME/dotfiles/.bashrc $HOME/.bashrc
+    rm -rf "$HOME/.bashrc"
+    ln -s -n "$HOME/dotfiles/.bashrc $HOME/.bashrc"
+    rm -rf "$HOME/bashrc/alias.sh"
+    rm -rf "$HOME/bashrc/utils.sh"
     ln -s -n "${HOME}/dotfiles/zshrc/alias.sh" "${HOME}/dotfiles/bashrc/alias.sh"
     ln -s -n "${HOME}/dotfiles/zshrc/utils.sh" "${HOME}/dotfiles/bashrc/utils.sh"
     echo ".bashrc instalado"
