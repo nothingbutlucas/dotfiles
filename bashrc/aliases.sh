@@ -1,1 +1,0 @@
-/home/f1l3r/dotfiles/zshrc/aliases.sh
