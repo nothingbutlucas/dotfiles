@@ -50,6 +50,8 @@ The important thing is that the backup part works perfectly.
 
     mv ${HOME}/.gitconfig ${HOME}/.config/dotfiles_backup/.gitconfig
 
+    mv ${HOME}/.Xdefaults ${HOME}/.config/dotfiles_backup/.Xdefaults
+
 #### Symbolic link the dotfiles
 
     ln -s -n ${HOME}/dotfiles/.zshrc ${HOME}/.zshrc
@@ -60,7 +62,9 @@ The important thing is that the backup part works perfectly.
 
     ln -s -n ${HOME}/dotfiles/.gitconfig ${HOME}/.gitconfig
 
-    ln -s -n ${HOME}/dotfiles/zshrc/alias.sh ${HOME}/dotfiles/bashrc/alias.sh
+    ln -s -n ${HOME}/dotfiles/.Xdefaults ${HOME}/.Xdefaults
+
+    ln -s -n ${HOME}/dotfiles/zshrc/aliases.sh ${HOME}/dotfiles/bashrc/aliases.sh
 
     ln -s -n ${HOME}/dotfiles/zshrc/utils.sh ${HOME}/dotfiles/bashrc/utils.sh
 
