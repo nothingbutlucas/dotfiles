@@ -1,1 +1,1 @@
-/home/lbd/dotfiles/zshrc/utils.sh
+/home/f1l3r/dotfiles/zshrc/utils.sh

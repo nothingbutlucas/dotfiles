@@ -37,5 +37,6 @@ zstyle ':completion:*:kill:*' command 'ps -u $USER -o pid,%cpu,tty,cputime,cmd'
 
 PATH=/snap/bin:/usr/local/bin:/usr/bin:/bin:/usr/games:/usr/share/games:/usr/local/sbin:/usr/sbin:/sbin:/usr/local/bin:/usr/bin:/bin:/usr/local/games:/usr/games/:/home/linuxbrew/.linuxbrew/bin:$HOME/.config/nvim/:$HOME/.cargo/bin/:$HOME/tools/node-v14.15.4-linux-x64/bin/:$HOME/.local/bin:$HOME/bin/:$PATH:
 
+xrdb ~/.Xdefaults
 
 export PATH="$HOME/tools/node-v14.15.4-linux-x64/bin:$PATH"

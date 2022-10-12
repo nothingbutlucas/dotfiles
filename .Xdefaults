@@ -1,0 +1,7 @@
+xterm*foreground: #ffffff
+xterm*background: #000000
+xterm*faceName: Monospace
+xterm*faceSize: 10
+xterm*scrollBar: false
+xterm*menuBar: false
+xterm*geometry: 110x20
