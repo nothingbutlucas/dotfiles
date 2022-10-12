@@ -111,8 +111,8 @@ function dotfiles(){
         echo ""
         sleep 0.05
     done
-    rm -rf "$HOME/dotfiles/bashrc/aliases.sh"
-    rm -rf "$HOME/dotfiles/bashrc/utils.sh"
+    rm -rf $HOME/dotfiles/bashrc/aliases.sh
+    rm -rf $HOME/dotfiles/bashrc/utils.sh
     ln -s -n ${HOME}/dotfiles/zshrc/aliases.sh ${HOME}/dotfiles/bashrc/aliases.sh
     ln -s -n ${HOME}/dotfiles/zshrc/utils.sh ${HOME}/dotfiles/bashrc/utils.sh
     sleep 0.05
