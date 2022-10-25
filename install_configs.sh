@@ -129,18 +129,24 @@ function tmux(){
 function lsd_i386(){
     command="wget https://github.com/Peltoche/lsd/releases/download/0.17.0/lsd_0.17.0_i386.deb"
     echo -e "${green}[+]${nc}Instalando lsd"
-    echo -e "${grey}$ ${command}${nc}"
-    sleep 0.05
     eval $command 2>>${error_logs}
+    command="sudo dpkg -i lsd_0.17.0_i386.deb"
+    echo -e "${grey}$ ${command}${nc}"
+    eval $command 2>>${error_logs}
+    rm lsd_0.17.0_i386.deb
+    sleep 0.05
 }
 
 function lsd_amd64(){
-    command="wget https://github.com/Peltoche/lsd/releases/download/0.23.0/lsd-musl_0.23.0_amd64.deb"
+    command="wget https://github.com/Peltoche/lsd/releases/download/0.23.0/lsd_0.23.0_amd64.deb"
     echo -e "${green}[+]${nc}Instalando lsd"
-    echo -e "${grey}$ ${command}${nc}"
-    sleep 0.05
     eval $command 2>>${error_logs}
-}
+    command="sudo dpkg -i lsd_0.23.0_amd64.deb"
+    echo -e "${grey}$ ${command}${nc}"
+    eval $command 2>>${error_logs}
+    rm lsd_0.23.0_amd64.deb
+    sleep 0.05
+  }
 
 function salir(){
     echo -e "${red}[!]${nc} Saliendo..."
