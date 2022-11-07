@@ -107,8 +107,7 @@ mymainmenu = awful.menu({ items = { { "Awesome", myawesomemenu, beautiful.awesom
                                     { " Terminal", terminal },
                                     { " Browser", "firefox" },
                                     { " Files", "nautilus" },
-                                    { " Lock", "gnome-screensaver-command -l" },
-                                    { " Logout", "gnome-session-quit" },
+                                    { " Logout", function() awesome.quit() end },
 
                                   }
                         })
