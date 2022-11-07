@@ -586,6 +586,7 @@ beautiful.useless_gap=5
 -- Autostart applications
 
 awful.spawn.with_shell("picom --config ~/.picom -b")
+awful.spawn.with_shell("gnome-keyring-daemon --start")
 
 -- Enable sloppy focus, so that focus follows mouse.
 client.connect_signal("mouse::enter", function(c)
