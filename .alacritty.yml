@@ -1,0 +1,15 @@
+env:
+    TERM: alacritty
+font:
+  normal:
+    family: "HackNerdFont"
+    style: Regular
+  bold:
+    family: "HackNerdFont"
+    style: Bold
+
+  italic:
+    family: "HackNerdFont"
+    style: Italic
+
+  size: 12
