@@ -126,6 +126,28 @@ function tmux(){
     eval $command 2>>${error_logs}
 }
 
+function lsd_i386(){
+    command="wget https://github.com/Peltoche/lsd/releases/download/0.17.0/lsd_0.17.0_i386.deb"
+    echo -e "${green}[+]${nc}Instalando lsd"
+    eval $command 2>>${error_logs}
+    command="sudo dpkg -i lsd_0.17.0_i386.deb"
+    echo -e "${grey}$ ${command}${nc}"
+    eval $command 2>>${error_logs}
+    rm lsd_0.17.0_i386.deb
+    sleep 0.05
+}
+
+function lsd_amd64(){
+    command="wget https://github.com/Peltoche/lsd/releases/download/0.23.0/lsd_0.23.0_amd64.deb"
+    echo -e "${green}[+]${nc}Instalando lsd"
+    eval $command 2>>${error_logs}
+    command="sudo dpkg -i lsd_0.23.0_amd64.deb"
+    echo -e "${grey}$ ${command}${nc}"
+    eval $command 2>>${error_logs}
+    rm lsd_0.23.0_amd64.deb
+    sleep 0.05
+  }
+
 function salir(){
     echo -e "${red}[!]${nc} Saliendo..."
     echo -e "${red}[L]${nc} Si has tenido algún problema, puedes ver el log de errores en ${error_logs}"
@@ -138,9 +160,9 @@ function main(){
     PS3="[?]: "
     echo -e "${green}[*]${nc} Elige un número para instalar lo que quieras:\n"
     if [[ $package = "none" ]]; then
-        programs='backup powerlevel10k plugins_zsh dotfiles salir'
+        programs='backup powerlevel10k plugins_zsh dotfiles lsd_i386 lsd_amd64 salir'
     else
-        programs='zsh backup powerlevel10k mpv_youtube_dl dotfiles tmux plugins_zsh salir'
+        programs='zsh backup powerlevel10k mpv_youtube_dl dotfiles tmux plugins_zsh lsd_i386 lsd_amd64 salir'
     fi
     while [[ 1 -eq 1 ]]; do
         select program in $programs; do
