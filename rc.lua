@@ -587,6 +587,7 @@ beautiful.useless_gap=5
 
 awful.spawn.with_shell("picom --config ~/.picom -b")
 awful.spawn.with_shell("gnome-keyring-daemon --start")
+awful.spawn.with_shell("openrgb --startminimized --profile angry")
 
 -- Enable sloppy focus, so that focus follows mouse.
 client.connect_signal("mouse::enter", function(c)
