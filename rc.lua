@@ -14,6 +14,10 @@ local beautiful = require("beautiful")
 local naughty = require("naughty")
 local menubar = require("menubar")
 local hotkeys_popup = require("awful.hotkeys_popup")
+-- Enable volume Control
+local volume_widget = require('awesome-wm-widgets.volume-widget.volume')
+
+
 -- Enable hotkeys help widget for VIM and other apps
 -- when client with a matching name is opened:
 require("awful.hotkeys_popup.keys")
@@ -231,6 +235,9 @@ awful.screen.connect_for_each_screen(function(s)
         s.mytasklist, -- Middle widget
         { -- Right widgets
             layout = wibox.layout.fixed.horizontal,
+            volume_widget{
+              widget_type = 'horizontal_bar'
+            },
             mykeyboardlayout,
             wibox.widget.systray(),
             mytextclock,
@@ -250,6 +257,11 @@ root.buttons(gears.table.join(
 
 -- {{{ Key bindings
 globalkeys = gears.table.join(
+    -- Volume control
+    awful.key({ modkey,           }, "}", function() volume_widget:inc(1) end),
+    awful.key({ modkey,           }, "{", function() volume_widget:dec(1) end),
+    awful.key({ modkey,           }, "-", function() volume_widget:toggle() end),
+
     awful.key({ modkey,           }, "s",      hotkeys_popup.show_help,
               {description="show help", group="awesome"}),
     awful.key({ modkey,           }, "Left",   awful.tag.viewprev,
@@ -299,6 +311,8 @@ globalkeys = gears.table.join(
               {description = "open firefox", group = "launcher"}),
     awful.key({modkey, "Shift"    }, "b", function () awful.spawn("brave-browser") end,
               {description = "open brave", group = "launcher"}),
+    awful.key({modkey, "Shift"    }, "t", function () awful.spawn("telegram-desktop") end,
+              {description = "open telegram", group = "launcher"}),
     awful.key({ modkey,           }, "Return", function () awful.spawn(terminal) end,
               {description = "open a terminal", group = "launcher"}),
     awful.key({ modkey, "Control" }, "r", awesome.restart,
@@ -586,7 +600,7 @@ beautiful.useless_gap=5
 -- Autostart applications
 
 awful.spawn.with_shell("picom --config ~/.picom -b")
-awful.spawn.with_shell("gnome-keyring-daemon --start")
+-- awful.spawn.with_shell("gnome-keyring-daemon --start")
 awful.spawn.with_shell("openrgb --startminimized --profile angry")
 
 -- Enable sloppy focus, so that focus follows mouse.
