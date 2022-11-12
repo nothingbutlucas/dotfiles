@@ -600,7 +600,7 @@ beautiful.useless_gap=5
 -- Autostart applications
 
 awful.spawn.with_shell("picom --config ~/.picom -b")
--- awful.spawn.with_shell("gnome-keyring-daemon --start")
+awful.spawn.with_shell(home .. "/dotfiles/start_gnome_keyring.sh")
 awful.spawn.with_shell("openrgb --startminimized --profile angry")
 
 -- Enable sloppy focus, so that focus follows mouse.
