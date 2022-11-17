@@ -17,7 +17,6 @@ local hotkeys_popup = require("awful.hotkeys_popup")
 -- Enable volume Control
 local volume_widget = require('awesome-wm-widgets.volume-widget.volume')
 
-
 -- Enable hotkeys help widget for VIM and other apps
 -- when client with a matching name is opened:
 require("awful.hotkeys_popup.keys")
@@ -111,7 +110,10 @@ mymainmenu = awful.menu({ items = { { "Awesome", myawesomemenu, beautiful.awesom
                                     { " Terminal", terminal },
                                     { " Browser", "firefox" },
                                     { " Files", "nautilus" },
+                                    { " Lock", "xscreensaver-command -lock" },
                                     { " Logout", function() awesome.quit() end },
+                                    { " Reboot", "reboot" },
+                                    { " Shutdown", "shutdown now" },
 
                                   }
                         })
@@ -235,9 +237,7 @@ awful.screen.connect_for_each_screen(function(s)
         s.mytasklist, -- Middle widget
         { -- Right widgets
             layout = wibox.layout.fixed.horizontal,
-            volume_widget{
-              widget_type = 'horizontal_bar'
-            },
+            volume_widget(),
             mykeyboardlayout,
             wibox.widget.systray(),
             mytextclock,
@@ -245,7 +245,6 @@ awful.screen.connect_for_each_screen(function(s)
         },
     }
 end)
--- }}}
 
 -- {{{ Mouse bindings
 root.buttons(gears.table.join(
@@ -258,10 +257,14 @@ root.buttons(gears.table.join(
 -- {{{ Key bindings
 globalkeys = gears.table.join(
     -- Volume control
-    awful.key({ modkey,           }, "}", function() volume_widget:inc(1) end),
-    awful.key({ modkey,           }, "{", function() volume_widget:dec(1) end),
-    awful.key({ modkey,           }, "-", function() volume_widget:toggle() end),
+    awful.key({ modkey,           }, "XF86AudioRaiseVolume", function() volume_widget:inc(1) end,
+              {description = "volume up", group = "hotkeys"}),
+    awful.key({ modkey,           }, "XF86AudioLowerVolume", function() volume_widget:dec(1) end,
+              {description = "volume down", group = "hotkeys"}),
+    awful.key({ modkey,           }, "XF86AudioMute", function() volume_widget:toggle() end,
+              {description = "toggle mute", group = "hotkeys"}),
 
+    -- help
     awful.key({ modkey,           }, "s",      hotkeys_popup.show_help,
               {description="show help", group="awesome"}),
     awful.key({ modkey,           }, "Left",   awful.tag.viewprev,
@@ -305,6 +308,11 @@ globalkeys = gears.table.join(
             end
         end,
         {description = "go back", group = "client"}),
+
+    -- lockscreen using xscreensaver
+
+    awful.key({modkey, "Control" }, "l", function () awful.spawn("xscreensaver-command -lock") end,
+              {description = "lock screen", group = "awesome"}),
 
     -- Standard program
     awful.key({modkey, "Shift"    }, "f", function () awful.spawn("firefox") end,
@@ -601,7 +609,8 @@ beautiful.useless_gap=5
 
 awful.spawn.with_shell("picom --config ~/.picom -b")
 awful.spawn.with_shell(home .. "/dotfiles/start_gnome_keyring.sh")
-awful.spawn.with_shell("openrgb --startminimized --profile angry")
+awful.spawn.single_instance("openrgb --startminimized --profile angry")
+awful.spawn.with_shell("xscreensaver -no-splash &")
 
 -- Enable sloppy focus, so that focus follows mouse.
 client.connect_signal("mouse::enter", function(c)
