@@ -53,6 +53,8 @@ beautiful.init(gears.filesystem.get_themes_dir() .. "zenburn/theme.lua")
 -- Capture user home directory
 local home = os.getenv("HOME")
 
+beautiful.wallpaper = "/usr/share/backgrounds/images/wallpaper.png"
+
 -- This is used later as the default terminal and editor to run.
 
 terminal = home .. "/.cargo/bin/alacritty"
@@ -183,7 +185,9 @@ local function set_wallpaper(s)
         if type(wallpaper) == "function" then
             wallpaper = wallpaper(s)
         end
-        gears.wallpaper.maximized(wallpaper, s, true)
+        --gears.wallpaper.maximized(wallpaper, s, false)
+        --gears.wallpaper.tiled(wallpaper, s, false)
+        gears.wallpaper.centered(wallpaper, s, false)
     end
 end
 
@@ -264,6 +268,9 @@ globalkeys = gears.table.join(
     awful.key({ modkey,           }, "XF86AudioMute", function() volume_widget:toggle() end,
               {description = "toggle mute", group = "hotkeys"}),
 
+    -- Screenshot
+    awful.key({ }, "Print", function () awful.util.spawn("gnome-screenshot") end),
+
     -- help
     awful.key({ modkey,           }, "s",      hotkeys_popup.show_help,
               {description="show help", group="awesome"}),
@@ -311,8 +318,8 @@ globalkeys = gears.table.join(
 
     -- lockscreen using xscreensaver
 
-    awful.key({modkey, "Control" }, "l", function () awful.spawn("xscreensaver-command -lock") end,
-              {description = "lock screen", group = "awesome"}),
+    awful.key({modkey, "Shift" }, "t", function () awful.spawn("xscreensaver-command -lock") end,
+              {description = "lock screen", group = "system"}),
 
     -- Standard program
     awful.key({modkey, "Shift"    }, "f", function () awful.spawn("firefox") end,
