@@ -261,11 +261,11 @@ root.buttons(gears.table.join(
 -- {{{ Key bindings
 globalkeys = gears.table.join(
     -- Volume control
-    awful.key({ modkey,           }, "XF86AudioRaiseVolume", function() volume_widget:inc(1) end,
+    awful.key({}, "XF86AudioRaiseVolume", function() volume_widget:inc(1) end,
               {description = "volume up", group = "hotkeys"}),
-    awful.key({ modkey,           }, "XF86AudioLowerVolume", function() volume_widget:dec(1) end,
+    awful.key({},"XF86AudioLowerVolume", function() volume_widget:dec(1) end,
               {description = "volume down", group = "hotkeys"}),
-    awful.key({ modkey,           }, "XF86AudioMute", function() volume_widget:toggle() end,
+    awful.key({}, "XF86AudioMute", function() volume_widget:toggle() end,
               {description = "toggle mute", group = "hotkeys"}),
 
     -- Screenshot
@@ -318,7 +318,7 @@ globalkeys = gears.table.join(
 
     -- lockscreen using xscreensaver
 
-    awful.key({modkey, "Shift" }, "t", function () awful.spawn("xscreensaver-command -lock") end,
+    awful.key({"Control"}, "Super_L", function () awful.spawn("xscreensaver-command -lock") end,
               {description = "lock screen", group = "system"}),
 
     -- Standard program
@@ -615,9 +615,9 @@ beautiful.useless_gap=5
 -- Autostart applications
 
 awful.spawn.with_shell("picom --config ~/.picom -b")
-awful.spawn.with_shell(home .. "/dotfiles/start_gnome_keyring.sh")
+-- awful.spawn.with_shell(home .. "/dotfiles/start_gnome_keyring.sh")
 awful.spawn.single_instance("openrgb --startminimized --profile angry")
-awful.spawn.with_shell("xscreensaver -no-splash &")
+-- awful.spawn.with_shell("xscreensaver -no-splash &")
 
 -- Enable sloppy focus, so that focus follows mouse.
 client.connect_signal("mouse::enter", function(c)
