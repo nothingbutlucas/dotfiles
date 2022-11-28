@@ -14,6 +14,9 @@ local beautiful = require("beautiful")
 local naughty = require("naughty")
 local menubar = require("menubar")
 local hotkeys_popup = require("awful.hotkeys_popup")
+-- Enable volume Control
+local volume_widget = require('awesome-wm-widgets.volume-widget.volume')
+
 -- Enable hotkeys help widget for VIM and other apps
 -- when client with a matching name is opened:
 require("awful.hotkeys_popup.keys")
@@ -49,6 +52,8 @@ beautiful.init(gears.filesystem.get_themes_dir() .. "zenburn/theme.lua")
 
 -- Capture user home directory
 local home = os.getenv("HOME")
+
+beautiful.wallpaper = "/usr/share/backgrounds/images/wallpaper.png"
 
 -- This is used later as the default terminal and editor to run.
 
@@ -107,8 +112,10 @@ mymainmenu = awful.menu({ items = { { "Awesome", myawesomemenu, beautiful.awesom
                                     { " Terminal", terminal },
                                     { " Browser", "firefox" },
                                     { " Files", "nautilus" },
-                                    { " Lock", "gnome-screensaver-command -l" },
-                                    { " Logout", "gnome-session-quit" },
+                                    { " Lock", "xscreensaver-command -lock" },
+                                    { " Logout", function() awesome.quit() end },
+                                    { " Reboot", "reboot" },
+                                    { " Shutdown", "shutdown now" },
 
                                   }
                         })
@@ -178,7 +185,9 @@ local function set_wallpaper(s)
         if type(wallpaper) == "function" then
             wallpaper = wallpaper(s)
         end
-        gears.wallpaper.maximized(wallpaper, s, true)
+        --gears.wallpaper.maximized(wallpaper, s, false)
+        --gears.wallpaper.tiled(wallpaper, s, false)
+        gears.wallpaper.centered(wallpaper, s, false)
     end
 end
 
@@ -232,6 +241,7 @@ awful.screen.connect_for_each_screen(function(s)
         s.mytasklist, -- Middle widget
         { -- Right widgets
             layout = wibox.layout.fixed.horizontal,
+            volume_widget(),
             mykeyboardlayout,
             wibox.widget.systray(),
             mytextclock,
@@ -239,7 +249,6 @@ awful.screen.connect_for_each_screen(function(s)
         },
     }
 end)
--- }}}
 
 -- {{{ Mouse bindings
 root.buttons(gears.table.join(
@@ -251,6 +260,18 @@ root.buttons(gears.table.join(
 
 -- {{{ Key bindings
 globalkeys = gears.table.join(
+    -- Volume control
+    awful.key({}, "XF86AudioRaiseVolume", function() volume_widget:inc(1) end,
+              {description = "volume up", group = "hotkeys"}),
+    awful.key({},"XF86AudioLowerVolume", function() volume_widget:dec(1) end,
+              {description = "volume down", group = "hotkeys"}),
+    awful.key({}, "XF86AudioMute", function() volume_widget:toggle() end,
+              {description = "toggle mute", group = "hotkeys"}),
+
+    -- Screenshot
+    awful.key({ }, "Print", function () awful.util.spawn("gnome-screenshot") end),
+
+    -- help
     awful.key({ modkey,           }, "s",      hotkeys_popup.show_help,
               {description="show help", group="awesome"}),
     awful.key({ modkey,           }, "Left",   awful.tag.viewprev,
@@ -295,11 +316,18 @@ globalkeys = gears.table.join(
         end,
         {description = "go back", group = "client"}),
 
+    -- lockscreen using xscreensaver
+
+    awful.key({"Control"}, "Super_L", function () awful.spawn("xscreensaver-command -lock") end,
+              {description = "lock screen", group = "system"}),
+
     -- Standard program
     awful.key({modkey, "Shift"    }, "f", function () awful.spawn("firefox") end,
               {description = "open firefox", group = "launcher"}),
     awful.key({modkey, "Shift"    }, "b", function () awful.spawn("brave-browser") end,
               {description = "open brave", group = "launcher"}),
+    awful.key({modkey, "Shift"    }, "t", function () awful.spawn("telegram-desktop") end,
+              {description = "open telegram", group = "launcher"}),
     awful.key({ modkey,           }, "Return", function () awful.spawn(terminal) end,
               {description = "open a terminal", group = "launcher"}),
     awful.key({ modkey, "Control" }, "r", awesome.restart,
@@ -587,6 +615,9 @@ beautiful.useless_gap=5
 -- Autostart applications
 
 awful.spawn.with_shell("picom --config ~/.picom -b")
+-- awful.spawn.with_shell(home .. "/dotfiles/start_gnome_keyring.sh")
+awful.spawn.single_instance("openrgb --startminimized --profile angry")
+-- awful.spawn.with_shell("xscreensaver -no-splash &")
 
 -- Enable sloppy focus, so that focus follows mouse.
 client.connect_signal("mouse::enter", function(c)
