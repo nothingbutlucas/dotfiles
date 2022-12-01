@@ -615,9 +615,9 @@ beautiful.useless_gap=5
 -- Autostart applications
 
 awful.spawn.with_shell("picom --config ~/.picom -b")
--- awful.spawn.with_shell(home .. "/dotfiles/start_gnome_keyring.sh")
+awful.spawn.with_shell(home .. "/dotfiles/start_gnome_keyring.sh")
 awful.spawn.single_instance("openrgb --startminimized --profile angry")
--- awful.spawn.with_shell("xscreensaver -no-splash &")
+awful.spawn.with_shell("xscreensaver -no-splash &")
 
 -- Enable sloppy focus, so that focus follows mouse.
 client.connect_signal("mouse::enter", function(c)
