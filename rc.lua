@@ -17,6 +17,9 @@ local hotkeys_popup = require("awful.hotkeys_popup")
 -- Enable volume Control
 local volume_widget = require('awesome-wm-widgets.volume-widget.volume')
 
+-- Default volume to 30% at startup
+awful.spawn.with_shell("amixer -D pulse sset Master 30%")
+
 -- Enable hotkeys help widget for VIM and other apps
 -- when client with a matching name is opened:
 require("awful.hotkeys_popup.keys")
