@@ -117,6 +117,7 @@ mymainmenu = awful.menu({ items = { { "Awesome", myawesomemenu, beautiful.awesom
                                     { " Files", "nautilus" },
                                     { " Lock", "xscreensaver-command -lock" },
                                     { " Logout", function() awesome.quit() end },
+                                    { " Change user", "dm-tool switch-to-greeter" },
                                     { " Reboot", "reboot" },
                                     { " Shutdown", "shutdown now" },
 
@@ -617,6 +618,9 @@ beautiful.useless_gap=5
 
 -- Autostart applications
 
+awful.spawn.with_shell(xset s off)
+awful.spawn.with_shell(xset -dpms)
+awful.spawn.with_shell(xset s noblank)
 awful.spawn.with_shell("picom --config ~/.picom -b")
 awful.spawn.with_shell(home .. "/dotfiles/start_gnome_keyring.sh")
 awful.spawn.single_instance("openrgb --startminimized --profile angry")
