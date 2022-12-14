@@ -618,9 +618,9 @@ beautiful.useless_gap=5
 
 -- Autostart applications
 
-awful.spawn.with_shell(xset s off)
-awful.spawn.with_shell(xset -dpms)
-awful.spawn.with_shell(xset s noblank)
+awful.spawn.with_shell("xset s off")
+awful.spawn.with_shell("xset -dpms")
+awful.spawn.with_shell("xset s noblank")
 awful.spawn.with_shell("picom --config ~/.picom -b")
 awful.spawn.with_shell(home .. "/dotfiles/start_gnome_keyring.sh")
 awful.spawn.single_instance("openrgb --startminimized --profile angry")
