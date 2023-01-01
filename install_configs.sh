@@ -6,9 +6,8 @@ yellow=$(tput setaf 3)
 red=$(tput setaf 1)
 nc=$(tput sgr0)
 
-
 error_logs=$(pwd)/error_logs.log
-dotfiles=(.bashrc .zshrc .tmux.conf .gitconfig .gitignore .Xdefaults)
+dotfiles=(.bashrc .zshrc .tmux.conf .gitconfig .gitignore .Xdefaults rc.lua .picom)
 
 trap ctrl_c INT
 
@@ -74,48 +73,72 @@ function mpv_youtube_dl(){
 }
 
 function backup(){
-    echo -e "Vamos a hacer un backup de tu configuración actual"
-    mkdir -p ~/.config/backup
-    for dotfile in ${dotfiles[@]}; do
-        if [ -f ~/$dotfile ]; then
-            cp ~/$dotfile ~/.config/backup/$dotfile.bak 2>>${error_logs}
-            if [ $? -eq "0" ] ; then
-                echo -e "${green}[+]${nc} ${dotfile} ha sido copiado a ~/.config/backup/${dotfile}.bak"
-            else
-                echo -e "${red}[!]${nc} ${dotfile} no ha podido ser copiado a ~/.config/backup/${dotfile}.bak"
-            fi
-            echo ""
+  echo -e "Vamos a hacer un backup de tu configuración actual"
+  mkdir -p ~/.config/backup-dotfiles
+  for dotfile in ${dotfiles[@]}; do
+    if [ -f ~/$dotfile ]; then
+      cp ~/$dotfile ~/.config/backup-dotfiles/$dotfile.bak 2>>${error_logs}
+      if [ $? -eq "0" ] ; then
+        echo -e "${green}[+]${nc} ${dotfile} ha sido copiado a ~/.config/backup/${dotfile}.bak"
+      else
+        echo -e "${red}[!]${nc} ${dotfile} no ha podido ser copiado a ~/.config/backup/${dotfile}.bak"
+      fi
+      echo ""
+    fi
+    if dotfile == "rc.lua" ; then
+        if [ -d ~/.config/awesome ]; then
+          cp -r ~/.config/awesome ~/.config/backup-dotfiles/awesome.bak 2>>${error_logs}
+          if [ $? -eq "0" ] ; then
+            echo -e "${green}[+]${nc} ${dotfile} ha sido copiado a ~/.config/backup/awesome.bak"
+          else
+            echo -e "${red}[!]${nc} ${dotfile} no ha podido ser copiado a ~/.config/backup/awesome.bak"
+          fi
+          echo ""
+        else
+          echo -e "${yellow}[!]${nc} No tienes la carpeta ~/.config/awesome"
         fi
-    done
+    fi
+  done
 }
 
 function dotfiles(){
-    backup
-    echo -e "Instalando los dotfiles"
+  backup
+  echo -e "Instalando los dotfiles"
+  sleep 0.05
+  for dotfile in ${dotfiles[@]}; do
+    if [ -f ~/$dotfile ]; then
+      rm ~/$dotfile 2>>${error_logs}
+      if [ $? -eq "0" ]; then
+        echo -e "${green}[-] ${nc}${dotfile} ha sido borrado"
+      else
+        echo -e "${red}[!] ${nc}${dotfile} no ha podido ser borrado"
+      fi
+    fi
+    if [ dotfile == "rc.lua" ]; then
+      mkdir -p ~/.config/awesome
+      rm ~/.config/awesome/rc.lua 2>>${error_logs}
+      if [ $? -eq "0" ]; then
+        echo -e "${green}[-] ${nc}${dotfile} ha sido borrado"
+      else
+        echo -e "${red}[!] ${nc}${dotfile} no ha podido ser borrado"
+      fi
+      ln -s $HOME/dotfiles/$dotfile $HOME/.config/awesome/rc.lua 2>>${error_logs}
+    else
+      ln -s $HOME/dotfiles/$dotfile $HOME/$dotfile 2>>${error_logs}
+    fi
+    if [ $? -eq "0" ]; then
+      echo -e "${green}[+] ${nc}${dotfile} ha sido instalado"
+    else
+      echo -e "${red}[!] ${nc}${dotfile} no ha podido ser instalado"
+    fi
+    echo ""
     sleep 0.05
-    for dotfile in ${dotfiles[@]}; do
-        if [ -f ~/$dotfile ]; then
-            rm ~/$dotfile 2>>${error_logs}
-            if [ $? -eq "0" ]; then
-                echo -e "${green}[-] ${nc}${dotfile} ha sido borrado"
-            else
-                echo -e "${red}[!] ${nc}${dotfile} no ha podido ser borrado"
-            fi
-        fi
-        ln -s $HOME/dotfiles/$dotfile ~/$dotfile 2>>${error_logs}
-        if [ $? -eq "0" ]; then
-            echo -e "${green}[+] ${nc}${dotfile} ha sido instalado"
-        else
-            echo -e "${red}[!] ${nc}${dotfile} no ha podido ser instalado"
-        fi
-        echo ""
-        sleep 0.05
-    done
-    rm -rf $HOME/dotfiles/bashrc/aliases.sh
-    rm -rf $HOME/dotfiles/bashrc/utils.sh
-    ln -s -n ${HOME}/dotfiles/zshrc/aliases.sh ${HOME}/dotfiles/bashrc/aliases.sh
-    ln -s -n ${HOME}/dotfiles/zshrc/utils.sh ${HOME}/dotfiles/bashrc/utils.sh
-    sleep 0.05
+  done
+  rm -rf $HOME/dotfiles/bashrc/aliases.sh
+  rm -rf $HOME/dotfiles/bashrc/utils.sh
+  ln -s -n ${HOME}/dotfiles/zshrc/aliases.sh ${HOME}/dotfiles/bashrc/aliases.sh
+  ln -s -n ${HOME}/dotfiles/zshrc/utils.sh ${HOME}/dotfiles/bashrc/utils.sh
+  sleep 0.05
 }
 
 function tmux(){
