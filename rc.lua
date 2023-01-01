@@ -17,9 +17,6 @@ local hotkeys_popup = require("awful.hotkeys_popup")
 -- Enable volume Control
 local volume_widget = require('awesome-wm-widgets.volume-widget.volume')
 
--- Default volume to 30% at startup
-awful.spawn.with_shell("amixer -D pulse sset Master 30%")
-
 -- Enable hotkeys help widget for VIM and other apps
 -- when client with a matching name is opened:
 require("awful.hotkeys_popup.keys")
@@ -322,8 +319,8 @@ globalkeys = gears.table.join(
 
     -- lockscreen using xscreensaver
 
-    awful.key({"Control"}, "Super_L", function () awful.spawn("xscreensaver-command -lock") end,
-              {description = "lock screen", group = "system"}),
+    -- awful.key({"Control"}, "Super_L", function () awful.spawn("xscreensaver-command -lock") end,
+    --          {description = "lock screen", group = "system"}),
 
     -- Standard program
     awful.key({modkey, "Shift"    }, "f", function () awful.spawn("firefox") end,
@@ -623,8 +620,11 @@ awful.spawn.with_shell("xset -dpms")
 awful.spawn.with_shell("xset s noblank")
 awful.spawn.with_shell("picom --config ~/.picom -b")
 awful.spawn.with_shell(home .. "/dotfiles/start_gnome_keyring.sh")
-awful.spawn.single_instance("openrgb --startminimized --profile angry")
+-- awful.spawn.single_instance("openrgb --startminimized --profile angry")
 awful.spawn.with_shell("xscreensaver -no-splash &")
+
+-- Default volume to 30% at startup
+awful.spawn.with_shell("amixer -D pulse sset Master 30%")
 
 -- Enable sloppy focus, so that focus follows mouse.
 client.connect_signal("mouse::enter", function(c)
