@@ -146,3 +146,36 @@ cp_and_notify(){
     cp -rp $1 $2
     curl -H "Title: PC" -H "tags: computer" -H "Priority: high" -d "Se copio correctamente $1 a $2" ntfy.sh/$TOPICO_CP
 }
+
+search_in_all_folders(){
+  if [ -z "$1" ]; then
+    e_arrow "Que quieres buscar?\n"
+    read search
+  else
+    search=$1
+  fi
+
+  for directory in $(ls -d */); do
+    cd $directory
+    found=$(cat * | grep -i $search)
+    if [ -n "$found" ]; then
+      e_success "Encontrado $found en $directory"
+      e_success "\n$found\n"
+    fi
+    cd ..
+  done
+}
+
+kill-ps() {
+    if [ -z "$1" ]; then
+        e_arrow "Que proceso quieres matar?\n"
+        read process
+    else
+        process=$1
+    fi
+    sudo kill -9 $(ps aux | grep $process | awk '{print $2}')
+    e_arrow "\$(ps aux | grep $process | awk '{print \$2}')\n"
+    e_success "Mataste $process"
+    e_arrow "ps aux | grep $process\n"
+    ps aux | grep $process
+}
