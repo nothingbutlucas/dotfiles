@@ -611,7 +611,7 @@ end)
 
 -- Custom configuration
 
-beautiful.useless_gap=5
+-- beautiful.useless_gap=1
 
 -- Autostart applications
 
