@@ -122,10 +122,10 @@ mymainmenu = awful.menu({ items = { { "Awesome", myawesomemenu, beautiful.awesom
                         })
 
 userwidget = wibox.widget.textbox()
-userwidget:set_text("|-o-|  " .. os.getenv("USER") .. "  |-o-|")
+-- userwidget:set_text("|-o-|  " .. os.getenv("USER") .. "  |-o-|")
 
-mylauncher = awful.widget.launcher({ image = beautiful.awesome_icon,
-                                     menu = mymainmenu })
+-- mylauncher = awful.widget.launcher({ image = beautiful.awesome_icon,
+--                                      menu = mymainmenu })
 
 -- Menubar configuration
 menubar.utils.terminal = terminal -- Set the terminal for applications that require it
