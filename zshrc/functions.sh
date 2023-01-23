@@ -157,7 +157,7 @@ search_in_all_folders(){
 
   for directory in $(ls -d */); do
     cd $directory
-    found=$(cat * | grep -i $search)
+    found=$(cat * | grep -i $search &> /dev/null)
     if [ -n "$found" ]; then
       e_success "Encontrado $found en $directory"
       e_success "\n$found\n"
@@ -174,7 +174,7 @@ kill-ps() {
         process=$1
     fi
     sudo kill -9 $(ps aux | grep $process | awk '{print $2}')
-    e_arrow "\$(ps aux | grep $process | awk '{print \$2}')\n"
+    e_arrow "\$(ps aux | grep $process | awk '{print \$2}\')\n"
     e_success "Mataste $process"
     e_arrow "ps aux | grep $process\n"
     ps aux | grep $process
