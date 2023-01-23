@@ -43,8 +43,7 @@ function install(){
     command="which $program"
     echo -e "${grey}$ ${command}${nc}"
     sleep 0.05
-    eval $command 2>>${error_logs}
-    if [ $? -eq "0" ] ; then
+    if "$command" 2>>"${error_logs}"; then
         echo -e "${green}[+]${nc} $program está instalado"
     else
         echo -e "${red}[!]${nc} $program no está instalado"
@@ -53,8 +52,7 @@ function install(){
         command="sudo $package install $program -y"
         echo -e "${grey}$ ${command}${nc}"
         sleep 0.05
-        eval $command 2>>${error_logs}
-        if [ $? -eq "0" ] ; then
+        if "$command" 2>>"${error_logs}" ; then
             echo -e "${green}[+]${nc} $program ha sido instalado"
         else
             echo -e "${red}[!]${nc} $program no ha podido ser instalado"
@@ -65,22 +63,26 @@ function install(){
 
 function pre_requisites(){
   programs=(git wget curl)
-  for program in ${programs[@]}; do
-    install $program
+  for program in "${programs[@]}"; do
+    install "$program"
   done
 }
 
 function plugins_zsh(){
     echo -e "${green}[+]${nc} Vamos a crear la carpeta para los plugins de la zsh"
+    actual_path=$(pwd)
     sudo mkdir -p /usr/share/zsh-plugins/
-    cd /usr/share/zsh-plugins/
+    cd /usr/share/zsh-plugins/ || return
     sleep 0.04
-    echo -e "${green}[s]${nc} Voy a necesitar permisos de sudo para poder descargar los plugins de la zsh en /usr/share/zsh-plugins/"
-    sudo wget --nocache -b -t 5 "https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/plugins/sudo/sudo.plugin.zsh" 2>>${error_logs}
-    sudo wget --nocache -b -t 5 "https://raw.githubusercontent.com/zsh-users/zsh-autosuggestions/master/zsh-autosuggestions.zsh" 2>>${error_logs}
-    sudo wget --nocache -b -t 5 "https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/plugins/jsontools/jsontools.plugin.zsh" 2>>${error_logs}
-    sudo git clone https://github.com/zsh-users/zsh-syntax-highlighting.git 2>>${error_logs}
-    cd -
+    echo -e "${green}[s]${nc} Voy a necesitar permisos de sudo para poder descargar los plugins de la zsh en /usr/share/zsh-pugins/"
+    {
+    sudo wget -b -t 5 "https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/pugins/sudo/sudo.plugin.zsh"
+    sudo wget -b -t 5 "https://raw.githubusercontent.com/zsh-users/zsh-autosuggestions/master/zsh-autosuggestions.zsh"
+    sudo wget -b -t 5 "https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/plugins/jsontools/jsontools.plugin.zsh"
+    sudo git clone https://github.com/zsh-users/zsh-syntax-highlighting.git
+    } 2>> "${error_logs}"
+    rm -rf wget-log*
+    cd - || cd "$actual_path" || return
 }
 
 function zsh(){
@@ -88,13 +90,13 @@ function zsh(){
     command="sudo $package install zsh -y"
     echo -e "${grey}$ ${command}${nc}"
     sleep 0.05
-    eval $command 2>>${error_logs}
+    eval "$command" 2>>"${error_logs}"
 }
 
 function powerlevel10k(){
     echo "${green}[+]${nc} Instalando powerlevel10k..."
     sleep 0.05
-    git clone --depth=1 https://github.com/romkatv/powerlevel10k.git ~/powerlevel10k 2>>${error_logs}
+    git clone --depth=1 https://github.com/romkatv/powerlevel10k.git ~/powerlevel10k 2>>"${error_logs}"
     echo "Ahora instala la powerlevel10k con el comando p10k configure"
 }
 
@@ -103,26 +105,24 @@ function mpv_youtube_dl(){
     command="sudo $package install mpv youtube-dl -y"
     echo -e "${grey}$ ${command}${nc}"
     sleep 0.05
-    eval $command 2>>${error_logs}
+    eval "$command" 2>>"${error_logs}"
 }
 
 function backup(){
   echo -e "Vamos a hacer un backup de tu configuración actual"
   mkdir -p ~/.config/backup-dotfiles
-  for dotfile in ${dotfiles[@]}; do
-    if [ -f ~/$dotfile ]; then
-      cp ~/$dotfile ~/.config/backup-dotfiles/$dotfile.bak 2>>${error_logs}
-      if [ $? -eq "0" ] ; then
+  for dotfile in "${dotfiles[@]}"; do
+    if [ -f "$HOME/$dotfile" ]; then
+      if cp "$HOME/$dotfile" "$HOME/.config/backup-dotfiles/$dotfile.bak" 2>>"${error_logs}"; then
         echo -e "${green}[+]${nc} ${dotfile} ha sido copiado a ~/.config/backup/${dotfile}.bak"
       else
         echo -e "${red}[!]${nc} ${dotfile} no ha podido ser copiado a ~/.config/backup/${dotfile}.bak"
       fi
       echo ""
     fi
-    if dotfile == "rc.lua" ; then
+    if [ "$dotfile" = "rc.lua" ] ; then
         if [ -d ~/.config/awesome ]; then
-          cp -r ~/.config/awesome ~/.config/backup-dotfiles/awesome.bak 2>>${error_logs}
-          if [ $? -eq "0" ] ; then
+          if cp -r ~/.config/awesome ~/.config/backup-dotfiles/awesome.bak 2>>"${error_logs}"; then
             echo -e "${green}[+]${nc} ${dotfile} ha sido copiado a ~/.config/backup/awesome.bak"
           else
             echo -e "${red}[!]${nc} ${dotfile} no ha podido ser copiado a ~/.config/backup/awesome.bak"
@@ -139,28 +139,26 @@ function dotfiles(){
   backup
   echo -e "Instalando los dotfiles"
   sleep 0.05
-  for dotfile in ${dotfiles[@]}; do
-    if [ -f ~/$dotfile ]; then
-      rm ~/$dotfile 2>>${error_logs}
-      if [ $? -eq "0" ]; then
+  for dotfile in "${dotfiles[@]}"; do
+    if [ -f "$HOME/$dotfile" ]; then
+      if rm "$HOME/$dotfile" 2>>"${error_logs}"; then
         echo -e "${green}[-] ${nc}${dotfile} ha sido borrado"
       else
         echo -e "${red}[!] ${nc}${dotfile} no ha podido ser borrado"
       fi
     fi
-    if [ dotfile == "rc.lua" ]; then
+    if [ "$dotfile" = "rc.lua" ]; then
       mkdir -p ~/.config/awesome
-      rm ~/.config/awesome/rc.lua 2>>${error_logs}
-      if [ $? -eq "0" ]; then
+      if rm ~/.config/awesome/rc.lua 2>>"${error_logs}"; then
         echo -e "${green}[-] ${nc}${dotfile} ha sido borrado"
       else
         echo -e "${red}[!] ${nc}${dotfile} no ha podido ser borrado"
       fi
-      ln -s $HOME/dotfiles/$dotfile $HOME/.config/awesome/rc.lua 2>>${error_logs}
+      dotfile_dir="/.config/awesome/rc.lua"
     else
-      ln -s $HOME/dotfiles/$dotfile $HOME/$dotfile 2>>${error_logs}
+      dotfile_dir="$dotfile"
     fi
-    if [ $? -eq "0" ]; then
+    if ln -s "${HOME}/dotfiles/$dotfile" "${HOME}$dotfile_dir" 2>>"${error_logs}"; then
       echo -e "${green}[+] ${nc}${dotfile} ha sido instalado"
     else
       echo -e "${red}[!] ${nc}${dotfile} no ha podido ser instalado"
@@ -168,10 +166,10 @@ function dotfiles(){
     echo ""
     sleep 0.05
   done
-  rm -rf $HOME/dotfiles/bashrc/aliases.sh
-  rm -rf $HOME/dotfiles/bashrc/utils.sh
-  ln -s -n ${HOME}/dotfiles/zshrc/aliases.sh ${HOME}/dotfiles/bashrc/aliases.sh
-  ln -s -n ${HOME}/dotfiles/zshrc/utils.sh ${HOME}/dotfiles/bashrc/utils.sh
+  rm -rf "${HOME}"/dotfiles/bashrc/aliases.sh
+  rm -rf "${HOME}"/dotfiles/bashrc/utils.sh
+  ln -s -n"${HOME}"/dotfiles/zshrc/aliases.sh"${HOME}"/dotfiles/bashrc/aliases.sh
+  ln -s -n"${HOME}"/dotfiles/zshrc/utils.sh"${HOME}"/dotfiles/bashrc/utils.sh
   sleep 0.05
 }
 
@@ -180,16 +178,16 @@ function tmux(){
     echo -e "${green}[+]${nc}Instalando tmux"
     echo -e "${grey}$ ${command}${nc}"
     sleep 0.05
-    eval $command 2>>${error_logs}
+    eval "$command" 2>>"${error_logs}"
 }
 
 function lsd_i386(){
     command="wget https://github.com/Peltoche/lsd/releases/download/0.17.0/lsd_0.17.0_i386.deb"
     echo -e "${green}[+]${nc}Instalando lsd"
-    eval $command 2>>${error_logs}
+    eval "$command" 2>>"${error_logs}"
     command="sudo dpkg -i lsd_0.17.0_i386.deb"
     echo -e "${grey}$ ${command}${nc}"
-    eval $command 2>>${error_logs}
+    eval "$command" 2>>"${error_logs}"
     rm lsd_0.17.0_i386.deb
     sleep 0.05
 }
@@ -197,10 +195,10 @@ function lsd_i386(){
 function lsd_amd64(){
     command="wget https://github.com/Peltoche/lsd/releases/download/0.23.0/lsd_0.23.0_amd64.deb"
     echo -e "${green}[+]${nc}Instalando lsd"
-    eval $command 2>>${error_logs}
+    eval "$command" 2>>"${error_logs}"
     command="sudo dpkg -i lsd_0.23.0_amd64.deb"
     echo -e "${grey}$ ${command}${nc}"
-    eval $command 2>>${error_logs}
+    eval "$command" 2>>"${error_logs}"
     rm lsd_0.23.0_amd64.deb
     sleep 0.05
   }
@@ -218,12 +216,12 @@ function main(){
     pre_requisites
     echo -e "${green}[*]${nc} Elige un número para instalar lo que quieras:\n"
     if [[ $package = "none" ]]; then
-        programs='backup powerlevel10k plugins_zsh dotfiles lsd_i386 lsd_amd64 salir'
+      programs=("backup powerlevel10k plugins_zsh dotfiles lsd_i386 lsd_amd64 salir")
     else
-        programs='zsh backup powerlevel10k mpv_youtube_dl dotfiles tmux plugins_zsh lsd_i386 lsd_amd64 salir'
+      programs=("zsh backup powerlevel10k mpv_youtube_dl dotfiles tmux plugins_zsh lsd_i386 lsd_amd64 salir")
     fi
     while [[ 1 -eq 1 ]]; do
-        select program in $programs; do
+        select program in "${programs[@]}"; do
             echo -e "\n${green}[*]${nc} Has seleccionado $program \n"
             sleep 0.05
             $program
