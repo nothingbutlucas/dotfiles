@@ -36,6 +36,40 @@ function bruce_banner(){
     echo -e "\n"
 }
 
+function install(){
+    program=$1
+    echo -e "${green}[+]${nc} Comprobando si tienes instalado $program..."
+    sleep 0.05
+    command="which $program"
+    echo -e "${grey}$ ${command}${nc}"
+    sleep 0.05
+    eval $command 2>>${error_logs}
+    if [ $? -eq "0" ] ; then
+        echo -e "${green}[+]${nc} $program está instalado"
+    else
+        echo -e "${red}[!]${nc} $program no está instalado"
+        echo -e "${green}[+]${nc} Instalando $program..."
+        sleep 0.05
+        command="sudo $package install $program -y"
+        echo -e "${grey}$ ${command}${nc}"
+        sleep 0.05
+        eval $command 2>>${error_logs}
+        if [ $? -eq "0" ] ; then
+            echo -e "${green}[+]${nc} $program ha sido instalado"
+        else
+            echo -e "${red}[!]${nc} $program no ha podido ser instalado"
+            salir
+        fi
+    fi
+}
+
+function pre_requisites(){
+  programs=(git wget curl)
+  for program in ${programs[@]}; do
+    install $program
+  done
+}
+
 function plugins_zsh(){
     echo -e "${green}[+]${nc} Vamos a crear la carpeta para los plugins de la zsh"
     sudo mkdir -p /usr/share/zsh-plugins/
@@ -181,6 +215,7 @@ function salir(){
 
 function main(){
     PS3="[?]: "
+    pre_requisites
     echo -e "${green}[*]${nc} Elige un número para instalar lo que quieras:\n"
     if [[ $package = "none" ]]; then
         programs='backup powerlevel10k plugins_zsh dotfiles lsd_i386 lsd_amd64 salir'
@@ -199,13 +234,13 @@ function main(){
 }
 
 function identify_package_manager(){
-    if [ $(command -v apt) ]; then
+    if [ "$(command -v apt)" ]; then
         package="apt"
-    elif [ $(command -v pacman) ]; then
+    elif [ "$(command -v pacman)" ]; then
         package="pacman"
-    elif [ $(command -v dnf) ]; then
+    elif [ "$(command -v dnf)" ]; then
         package="dnf"
-    elif [ $(command -v yum) ]; then
+    elif [ "$(command -v yum)" ]; then
         package="yum"
     else
         package="none"
