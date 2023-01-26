@@ -9,6 +9,9 @@ nc=$(tput sgr0)
 error_logs=$(pwd)/error_logs.log
 dotfiles=(.bashrc .zshrc .tmux.conf .gitconfig .gitignore .Xdefaults rc.lua .picom)
 
+quiet=0
+package="none"
+
 trap ctrl_c INT
 
 function ctrl_c() {
@@ -36,35 +39,45 @@ function bruce_banner(){
     echo -e "\n"
 }
 
+function is_installed(){
+  program=$1
+  echo -e "${green}[+]${nc} Comprobando si tienes instalado ${program}..."
+  sleep 0.05
+  echo -e "${grey}$ command -v ${program} ${nc}"
+  sleep 0.05
+  if command -v "${program}" 1>/dev/null 2>>"${error_logs}"; then
+      echo -e "${green}[+]${nc} ${program} está instalado"
+      return 0
+  else
+      echo -e "${red}[!]${nc} ${program} no está instalado"
+      return 1
+  fi
+}
+
 function install(){
-    program=$1
-    echo -e "${green}[+]${nc} Comprobando si tienes instalado $program..."
+  program=$1
+  if ! is_installed "${program}"; then
+    echo -e "${green}[+]${nc} Instalando ${program}..."
     sleep 0.05
-    command="which $program"
+    command="sudo ${package} install ${program} -y"
     echo -e "${grey}$ ${command}${nc}"
     sleep 0.05
-    if "$command" 2>>"${error_logs}"; then
-        echo -e "${green}[+]${nc} $program está instalado"
+    if "$command" 2>>"${error_logs}" ; then
+        echo -e "${green}[+]${nc} ${program} ha sido instalado"
     else
-        echo -e "${red}[!]${nc} $program no está instalado"
-        echo -e "${green}[+]${nc} Instalando $program..."
-        sleep 0.05
-        command="sudo $package install $program -y"
-        echo -e "${grey}$ ${command}${nc}"
-        sleep 0.05
-        if "$command" 2>>"${error_logs}" ; then
-            echo -e "${green}[+]${nc} $program ha sido instalado"
-        else
-            echo -e "${red}[!]${nc} $program no ha podido ser instalado"
-            salir
-        fi
+        echo -e "${red}[!]${nc} ${program} no ha podido ser instalado"
+        salir
     fi
+  else
+    echo -e "${yellow}[!]${nc} Saltando instalación de ${program}..."
+  fi
+  echo ""
 }
 
 function pre_requisites(){
   programs=(git wget curl)
   for program in "${programs[@]}"; do
-    install "$program"
+    install "${program}"
   done
 }
 
@@ -86,11 +99,11 @@ function plugins_zsh(){
 }
 
 function zsh(){
-    echo "${green}[s]${nc} Instalando zsh..."
-    command="sudo $package install zsh -y"
-    echo -e "${grey}$ ${command}${nc}"
-    sleep 0.05
-    eval "$command" 2>>"${error_logs}"
+  echo "${green}[s]${nc} Instalando zsh..."
+  command="sudo ${package} install zsh -y"
+  echo -e "${grey}$ ${command}${nc}"
+  sleep 0.05
+  eval "$command" 2>>"${error_logs}"
 }
 
 function powerlevel10k(){
@@ -102,7 +115,7 @@ function powerlevel10k(){
 
 function mpv_youtube_dl(){
     echo -e "${green}[s]${nc} Instalando mpv y youtube-dl..."
-    command="sudo $package install mpv youtube-dl -y"
+    command="sudo ${package} install mpv youtube-dl -y"
     echo -e "${grey}$ ${command}${nc}"
     sleep 0.05
     eval "$command" 2>>"${error_logs}"
@@ -174,7 +187,7 @@ function dotfiles(){
 }
 
 function tmux(){
-    command="sudo $package install tmux -y"
+    command="sudo ${package} install tmux -y"
     echo -e "${green}[+]${nc}Instalando tmux"
     echo -e "${grey}$ ${command}${nc}"
     sleep 0.05
@@ -212,26 +225,26 @@ function salir(){
 }
 
 function main(){
-    PS3="[?]: "
-    pre_requisites
-    echo -e "${green}[*]${nc} Elige un número para instalar lo que quieras:\n"
-    if [[ $package = "none" ]]; then
-      programs=("backup powerlevel10k plugins_zsh dotfiles lsd_i386 lsd_amd64 salir")
-    else
-      programs=("zsh backup powerlevel10k mpv_youtube_dl dotfiles tmux plugins_zsh lsd_i386 lsd_amd64 salir")
-    fi
-    while [[ 1 -eq 1 ]]; do
-        select program in "${programs[@]}"; do
-            echo -e "\n${green}[*]${nc} Has seleccionado $program \n"
-            sleep 0.05
-            $program
-            break
-        done
+  PS3="[?]: "
+  echo -e "${green}[*]${nc} Elige un número para instalar lo que quieras:\n"
+  if [[ ${package} = "none" ]]; then
+    programs=(backup powerlevel10k plugins_zsh dotfiles lsd_i386 lsd_amd64 salir)
+  else
+    programs=(zsh backup powerlevel10k mpv_youtube_dl dotfiles tmux plugins_zsh lsd_i386 lsd_amd64 salir)
+  fi
+  while [[ 1 -eq 1 ]]; do
+    select program in "${programs[@]}"; do
+      echo -e "\n${green}[*]${nc} Has seleccionado ${program} \n"
+      sleep 0.05
+      "$program"
+      break
     done
-        exit 0
+  done
+    exit 0
 }
 
 function identify_package_manager(){
+  if [ "${package}" == "none" ]; then
     if [ "$(command -v apt)" ]; then
         package="apt"
     elif [ "$(command -v pacman)" ]; then
@@ -243,12 +256,27 @@ function identify_package_manager(){
     else
         package="none"
     fi
-    echo -e "${green}[+]${nc} Vamos a usar el gestor $package"
+    echo -e "${green}[+]${nc} Vamos a usar el gestor ${package}"
+  else
+    echo -e "${green}[+]${nc} Gestior de paquetes forzado a ${package}"
+  fi
 }
+
 tput civis
 
-bruce_banner
+while getopts ":qp:" option; do
+  case "${option}" in
+    q) quiet=1;;
+    p) package="$OPTARG";;
+    *) echo -e "${red}[!]${nc} Opción inválida: -$OPTARG" >&2;;
+  esac
+done
 
 identify_package_manager
+
+if [ "${quiet}" == 0 ]; then
+  bruce_banner
+  pre_requisites
+fi
 
 main
