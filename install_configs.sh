@@ -171,7 +171,8 @@ function dotfiles(){
     else
       dotfile_dir="$dotfile"
     fi
-    if ln -s "${HOME}/dotfiles/$dotfile" "${HOME}$dotfile_dir" 2>>"${error_logs}"; then
+    ln -s "${HOME}/dotfiles/$dotfile" "${HOME}/$dotfile_dir"
+    if [ $? == 0 ] 2>>"${error_logs}"; then
       echo -e "${green}[+] ${nc}${dotfile} ha sido instalado"
     else
       echo -e "${red}[!] ${nc}${dotfile} no ha podido ser instalado"
@@ -181,8 +182,8 @@ function dotfiles(){
   done
   rm -rf "${HOME}"/dotfiles/bashrc/aliases.sh
   rm -rf "${HOME}"/dotfiles/bashrc/utils.sh
-  ln -s -n"${HOME}"/dotfiles/zshrc/aliases.sh"${HOME}"/dotfiles/bashrc/aliases.sh
-  ln -s -n"${HOME}"/dotfiles/zshrc/utils.sh"${HOME}"/dotfiles/bashrc/utils.sh
+  ln -s -n "${HOME}/dotfiles/zshrc/aliases.sh" "${HOME}/dotfiles/bashrc/aliases.sh"
+  ln -s -n "${HOME}/dotfiles/zshrc/utils.sh" "${HOME}/dotfiles/bashrc/utils.sh"
   sleep 0.05
 }
 
