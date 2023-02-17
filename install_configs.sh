@@ -7,7 +7,7 @@ red=$(tput setaf 1)
 nc=$(tput sgr0)
 
 error_logs=$(pwd)/error_logs.log
-dotfiles=(.bashrc .zshrc .tmux.conf .gitconfig .gitignore .Xdefaults rc.lua .picom)
+dotfiles=(.bashrc .zshrc .tmux.conf .gitconfig .gitignore .Xdefaults rc.lua .picom .ideavimrc)
 
 quiet=0
 package="none"
@@ -148,7 +148,7 @@ function backup(){
   done
 }
 
-function dotfiles(){
+function dotfiles-installation(){
   backup
   echo -e "Instalando los dotfiles"
   sleep 0.05
@@ -172,6 +172,7 @@ function dotfiles(){
       dotfile_dir="$dotfile"
     fi
     ln -s "${HOME}/dotfiles/$dotfile" "${HOME}/$dotfile_dir"
+
     if [ $? == 0 ] 2>>"${error_logs}"; then
       echo -e "${green}[+] ${nc}${dotfile} ha sido instalado"
     else
@@ -229,9 +230,9 @@ function main(){
   PS3="[?]: "
   echo -e "${green}[*]${nc} Elige un número para instalar lo que quieras:\n"
   if [[ ${package} = "none" ]]; then
-    programs=(backup powerlevel10k plugins_zsh dotfiles lsd_i386 lsd_amd64 salir)
+    programs=(backup powerlevel10k plugins_zsh dotfiles-installation lsd_i386 lsd_amd64 salir)
   else
-    programs=(zsh backup powerlevel10k mpv_youtube_dl dotfiles tmux plugins_zsh lsd_i386 lsd_amd64 salir)
+    programs=(zsh backup powerlevel10k mpv_youtube_dl dotfiles-installation tmux plugins_zsh lsd_i386 lsd_amd64 salir)
   fi
   while [[ 1 -eq 1 ]]; do
     select program in "${programs[@]}"; do
