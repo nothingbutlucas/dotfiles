@@ -157,9 +157,14 @@ search_in_all_folders(){
 
   for directory in $(ls -d */); do
     cd $directory
-    found=$(cat * | grep -i $search &> /dev/null)
+    found=$((cat * | grep -i $search) 2> /dev/null)
     if [ -n "$found" ]; then
-      e_success "Encontrado $found en $directory"
+      e_success "encontrado $found en $directory"
+      e_success "\n$found\n"
+    fi
+    found=$((ls -la | grep -i $search) 2> /dev/null)
+    if [ -n "$found" ]; then
+      e_success "encontrado $found en $directory"
       e_success "\n$found\n"
     fi
     cd ..
