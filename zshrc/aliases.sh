@@ -18,3 +18,7 @@ alias reverse_shell_ps="ps aux | grep /bin/bash/-i"
 # Music
 
 alias music='cat ${HOME}/dotfiles/zshrc/music.sh | sed "s/=/ /g" | awk "{print \$2}"'
+
+# unetbootin
+
+alias unetbootin='sudo QT_X11_NO_MITSHM=1 /usr/bin/unetbootin'
