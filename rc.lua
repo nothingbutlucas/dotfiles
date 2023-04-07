@@ -16,10 +16,7 @@ local menubar = require("menubar")
 local hotkeys_popup = require("awful.hotkeys_popup")
 -- Enable volume Control
 local volume_widget = require("awesome-wm-widgets.volume-widget.volume")
--- Network widget
 require("modules/create_class")
-require("modules/widgets/network_widget")
-local network_configuration_command = "nm-connection-editor"
 -- Enable hotkeys help widget for VIM and other apps
 -- when client with a matching name is opened:
 require("awful.hotkeys_popup.keys")
@@ -58,7 +55,6 @@ end
 -- {{{ Variable definitions
 -- Themes define colours, icons, font and wallpapers.
 beautiful.init(gears.filesystem.get_themes_dir() .. "zenburn/theme.lua")
-local network_widget = NetworkWidget(false, network_configuration_command)
 -- Capture user home directory
 local home = os.getenv("HOME")
 
@@ -121,6 +117,8 @@ myawesomemenu = {
 beautiful.menu_height = 30
 beautiful.menu_width = 200
 beautiful.menu_font = "Hack Nerd Font 12"
+beautiful.titlebar_font = "Hack Nerd Font 12"
+beautiful.font = "JetBrainsMono Nerd Font Bold 10"
 
 beautiful.menu_fg_normal = "#ffffff"
 beautiful.menu_fg_focus = "#bfe82c"
@@ -146,6 +144,7 @@ mymainmenu = awful.menu({
 })
 
 userwidget = wibox.widget.textbox()
+
 -- userwidget:set_text("|-o-|  " .. os.getenv("USER") .. "  |-o-|")
 
 -- mylauncher = awful.widget.launcher({ image = beautiful.awesome_icon,
@@ -174,6 +173,10 @@ awful.spawn.easy_async_with_shell(
 		end)
 	end
 )
+
+-- Network Usage monitor
+
+network_usage_monitor = wibox.widget.textbox()
 
 -- Create a wibox for each screen and add it
 local taglist_buttons = gears.table.join(
@@ -281,10 +284,12 @@ awful.screen.connect_for_each_screen(function(s)
 
 	-- Create the wibox
 	s.mywibox = awful.wibar({ position = "top", screen = s })
+	-- s.mywibox = awful.wibar({ position = "left", screen = s })
 
 	-- Add widgets to the wibox
 	s.mywibox:setup({
 		layout = wibox.layout.align.horizontal,
+		-- spacing = 20,
 		{ -- Left widgets
 			layout = wibox.layout.fixed.horizontal,
 			mylauncher,
@@ -295,6 +300,9 @@ awful.screen.connect_for_each_screen(function(s)
 		s.mytasklist, -- Middle widget
 		{ -- Right widgets
 			layout = wibox.layout.fixed.horizontal,
+			wibox.widget.textbox(" I "),
+			network_usage_monitor,
+			wibox.widget.textbox(" I "),
 			volume_widget(),
 			mykeyboardlayout,
 			s.systray,
@@ -330,8 +338,8 @@ globalkeys = gears.table.join(
 
 	-- Screenshot
 	awful.key({}, "Print", function()
-		awful.util.spawn("gnome-screenshot")
-	end),
+		awful.spawn("gnome-screenshot -a")
+	end, { description = "screenshot", group = "hotkeys" }),
 
 	-- help
 	awful.key({ modkey }, "s", hotkeys_popup.show_help, { description = "show help", group = "awesome" }),
@@ -377,13 +385,13 @@ globalkeys = gears.table.join(
 
 	-- Standard program
 	awful.key({ modkey, "Shift" }, "f", function()
-		awful.spawn("firefox")
+		awful.spawn("firejail firefox")
 	end, { description = "open firefox", group = "launcher" }),
 	awful.key({ modkey, "Shift" }, "b", function()
-		awful.spawn("brave-browser")
+		awful.spawn("firejail brave-browser")
 	end, { description = "open brave", group = "launcher" }),
 	awful.key({ modkey, "Shift" }, "t", function()
-		awful.spawn("telegram-desktop")
+		awful.spawn("firejail telegram-desktop")
 	end, { description = "open telegram", group = "launcher" }),
 	awful.key({ modkey }, "Return", function()
 		awful.spawn(terminal)
