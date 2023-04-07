@@ -143,7 +143,7 @@ mymainmenu = awful.menu({
 	},
 })
 
-userwidget = wibox.widget.textbox()
+-- userwidget = wibox.widget.textbox()
 
 -- userwidget:set_text("|-o-|  " .. os.getenv("USER") .. "  |-o-|")
 
@@ -155,28 +155,11 @@ menubar.utils.terminal = terminal -- Set the terminal for applications that requ
 -- }}}
 
 -- Keyboard map indicator and switcher
-mykeyboardlayout = awful.widget.keyboardlayout()
+-- mykeyboardlayout = awful.widget.keyboardlayout()
 
 -- {{{ Wibar
 -- Create a textclock widget
-mytextclock = wibox.widget.textclock("| %d/%m/%y | %I:%M %p | ")
-
--- Weather
-
-ww = wibox.widget.textbox()
-
-awful.spawn.easy_async_with_shell(
-	"curl 'wttr.in/" .. os.getenv("CITY") .. "?format=%c+%t' > /tmp/weather.txt",
-	function()
-		awful.spawn.easy_async_with_shell("cat /tmp/weather.txt", function(out)
-			ww.text = out
-		end)
-	end
-)
-
--- Network Usage monitor
-
-network_usage_monitor = wibox.widget.textbox()
+-- mytextclock = wibox.widget.textclock("| %d/%m/%y | %I:%M %p | ")
 
 -- Create a wibox for each screen and add it
 local taglist_buttons = gears.table.join(
@@ -283,34 +266,34 @@ awful.screen.connect_for_each_screen(function(s)
 	})
 
 	-- Create the wibox
-	s.mywibox = awful.wibar({ position = "top", screen = s })
+	-- s.mywibox = awful.wibar({ position = "top", screen = s })
 	-- s.mywibox = awful.wibar({ position = "left", screen = s })
 
 	-- Add widgets to the wibox
-	s.mywibox:setup({
-		layout = wibox.layout.align.horizontal,
-		-- spacing = 20,
-		{ -- Left widgets
-			layout = wibox.layout.fixed.horizontal,
-			mylauncher,
-			userwidget,
-			s.mytaglist,
-			s.mypromptbox,
-		},
-		s.mytasklist, -- Middle widget
-		{ -- Right widgets
-			layout = wibox.layout.fixed.horizontal,
-			wibox.widget.textbox(" I "),
-			network_usage_monitor,
-			wibox.widget.textbox(" I "),
-			volume_widget(),
-			mykeyboardlayout,
-			s.systray,
-			mytextclock,
-			ww,
-			-- s.mylayoutbox,
-		},
-	})
+	-- s.mywibox:setup({
+	-- 	layout = wibox.layout.align.horizontal,
+	-- 	-- spacing = 20,
+	-- 	{ -- Left widgets
+	-- 		layout = wibox.layout.fixed.horizontal,
+	-- 		mylauncher,
+	-- 		userwidget,
+	-- 		s.mytaglist,
+	-- 		s.mypromptbox,
+	-- 	},
+	-- 	s.mytasklist, -- Middle widget
+	-- 	{ -- Right widgets
+	-- 		layout = wibox.layout.fixed.horizontal,
+	-- 		wibox.widget.textbox(" I "),
+	-- 		network_usage_monitor,
+	-- 		wibox.widget.textbox(" I "),
+	-- 		volume_widget(),
+	-- 		mykeyboardlayout,
+	-- 		s.systray,
+	-- 		mytextclock,
+	-- 		ww,
+	-- 		-- s.mylayoutbox,
+	-- 	},
+	-- })
 end)
 
 -- {{{ Mouse bindings
@@ -327,13 +310,13 @@ root.buttons(gears.table.join(
 globalkeys = gears.table.join(
 	-- Volume control
 	awful.key({}, "XF86AudioRaiseVolume", function()
-		volume_widget:inc(1)
+		awful.spawn("pactl set-sink-volume @DEFAULT_SINK@ +1%")
 	end, { description = "volume up", group = "hotkeys" }),
 	awful.key({}, "XF86AudioLowerVolume", function()
-		volume_widget:dec(1)
+		awful.spawn("pactl set-sink-volume @DEFAULT_SINK@ -1%")
 	end, { description = "volume down", group = "hotkeys" }),
 	awful.key({}, "XF86AudioMute", function()
-		volume_widget:toggle()
+		awful.spawn("pactl set-sink-mute @DEFAULT_SINK@ toggle")
 	end, { description = "toggle mute", group = "hotkeys" }),
 
 	-- Screenshot
@@ -384,6 +367,9 @@ globalkeys = gears.table.join(
 	--          {description = "lock screen", group = "system"}),
 
 	-- Standard program
+	awful.key({ modkey }, "r", function()
+		awful.spawn("rofi -show drun")
+	end, { description = "Rofi app selector", group = "launcher" }),
 	awful.key({ modkey, "Shift" }, "f", function()
 		awful.spawn("firejail firefox")
 	end, { description = "open firefox", group = "launcher" }),
@@ -671,7 +657,7 @@ end)
 
 -- Custom configuration
 
--- beautiful.useless_gap=1
+beautiful.useless_gap = 20
 
 -- Autostart applications
 
@@ -681,6 +667,8 @@ awful.spawn.with_shell("xset s noblank")
 awful.spawn.with_shell("picom --config ~/.picom -b")
 awful.spawn.with_shell(home .. "/dotfiles/start_tray_apps.sh")
 awful.spawn.with_shell("xscreensaver -no-splash &")
+awful.spawn.with_shell(home .. "/dotfiles/start_polybar.sh")
+awful.spawn.with_shell("nm-applet")
 
 -- Default volume to 30% at startup
 awful.spawn.with_shell("amixer -D pulse sset Master 30%")
