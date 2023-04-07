@@ -8,7 +8,7 @@ map Q gq
 let mapleader = ","
 
 " Relative numbers
-set number norelativenumber
+set number relativenumber
 
 " Clipboard
 set clipboard+=unnamed
