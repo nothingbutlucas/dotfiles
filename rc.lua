@@ -15,7 +15,7 @@ local naughty = require("naughty")
 local menubar = require("menubar")
 local hotkeys_popup = require("awful.hotkeys_popup")
 -- Enable volume Control
-local volume_widget = require("awesome-wm-widgets.volume-widget.volume")
+-- local volume_widget = require("awesome-wm-widgets.volume-widget.volume")
 require("modules/create_class")
 -- Enable hotkeys help widget for VIM and other apps
 -- when client with a matching name is opened:
@@ -129,7 +129,7 @@ mymainmenu = awful.menu({
 	items = {
 		{ "Awesome", myawesomemenu, beautiful.awesome_icon },
 		{ " Terminal", terminal },
-		{ " Browser", "firefox" },
+		{ " Browser", "librewolf" },
 		{ " Files", "nautilus" },
 		{ " Lock", "xscreensaver-command -lock" },
 		{
@@ -300,9 +300,9 @@ end)
 root.buttons(gears.table.join(
 	awful.button({}, 3, function()
 		mymainmenu:toggle()
-	end),
-	awful.button({}, 4, awful.tag.viewnext),
-	awful.button({}, 5, awful.tag.viewprev)
+	end)
+	-- ,awful.button({}, 4, awful.tag.viewnext),
+	-- awful.button({}, 5, awful.tag.viewprev)
 ))
 -- }}}
 
@@ -371,8 +371,8 @@ globalkeys = gears.table.join(
 		awful.spawn("rofi -show drun")
 	end, { description = "Rofi app selector", group = "launcher" }),
 	awful.key({ modkey, "Shift" }, "f", function()
-		awful.spawn("firejail firefox")
-	end, { description = "open firefox", group = "launcher" }),
+		awful.spawn("firejail librewolf")
+	end, { description = "open librewolf", group = "launcher" }),
 	awful.key({ modkey, "Shift" }, "b", function()
 		awful.spawn("firejail brave-browser")
 	end, { description = "open brave", group = "launcher" }),
