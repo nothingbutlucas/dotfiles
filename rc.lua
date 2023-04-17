@@ -377,7 +377,7 @@ globalkeys = gears.table.join(
 		awful.spawn("firejail brave-browser")
 	end, { description = "open brave", group = "launcher" }),
 	awful.key({ modkey, "Shift" }, "t", function()
-		awful.spawn("firejail telegram-desktop")
+		awful.spawn("telegram-desktop")
 	end, { description = "open telegram", group = "launcher" }),
 	awful.key({ modkey }, "Return", function()
 		awful.spawn(terminal)
