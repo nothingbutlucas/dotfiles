@@ -35,8 +35,11 @@ zstyle ':completion:*' verbose true
 zstyle ':completion:*:*:kill:*:processes' list-colors '=(#b) #([0-9]#)*=0=01;31'
 zstyle ':completion:*:kill:*' command 'ps -u $USER -o pid,%cpu,tty,cputime,cmd'
 
-PATH=$HOME/bin:/snap/bin:/usr/local/bin:/usr/bin:/bin:/usr/games:/usr/share/games:/usr/local/sbin:/usr/sbin:/sbin:/usr/local/bin:/usr/bin:/bin:/usr/local/games:/usr/games/:/home/linuxbrew/.linuxbrew/bin:$HOME/.config/nvim/:$HOME/.cargo/bin/:$HOME/tools/node-v14.15.4-linux-x64/bin/:$HOME/.local/bin:$HOME/bin/:$PATH:
+PATH=$HOME/bin:/snap/bin:/usr/local/bin:/usr/bin:/bin:/usr/games:/usr/share/games:/usr/local/sbin:/usr/sbin:/sbin:/usr/local/bin:/usr/bin:/bin:/usr/local/games:/usr/games/:/home/linuxbrew/.linuxbrew/bin:$HOME/.config/nvim/:$HOME/.cargo/bin/:$HOME/tools/node-v14.15.4-linux-x64/bin/:$HOME/.local/bin:$HOME/bin/:/usr/local/lib/:$PATH:
 
 xrdb ~/.Xdefaults
 
 export PATH="$HOME/tools/node-v14.15.4-linux-x64/bin:$PATH"
+export PKG_CONFIG_PATH=/usr/local/lib/pkgconfig
+export LD_LIBRARY_PATH=/usr/local/lib/
+
