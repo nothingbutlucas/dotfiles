@@ -5,6 +5,6 @@ FILES=($(echo $FILES_STR | tr '\n' ' '))
 
 source /usr/share/zsh-plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
 
-for FILE in $FILES;do
-    source /usr/share/zsh-plugins/$FILE
+for FILE in $FILES; do
+	source /usr/share/zsh-plugins/$FILE
 done
