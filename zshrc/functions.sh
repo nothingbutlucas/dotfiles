@@ -92,27 +92,27 @@ function rmk() {
 
 function porcentaje() {
 	if [[ $# = 2 ]]; then
-		porcentaje=$((($1 * 100) / $2))
-		e_success "$1 es el $porcentaje % de $2"
+		porcentaje=$(($1 * 100 / $2))
+		e_success "${1} es el $porcentaje % de ${2}"
 	else
 		e_arrow "Decime el primer numero que sera un porcentaje del segundo"
 		read numero_1
 		e_arrow "Pasame el segundo numero"
 		read numero_2
 
-		porcentaje=$((($numero_1 * 100) / $numero_2))
+		porcentaje=$(($numero_1 * 100 / $numero_2))
 
 		e_success "$numero_1 es el $porcentaje % de $numero_2"
 
 	fi
 }
 
-timezsh() {
+function timezsh() {
 	shell=${1-$SHELL}
 	for i in $(seq 1 10); do /usr/bin/time $shell -i -c exit; done
 }
 
-alerta() {
+function alerta() {
 	e_arrow "Hora de alerta"
 	read alarma_hora
 	e_arrow "Minuto de alerta"
@@ -126,18 +126,18 @@ alerta() {
 	crontab -e
 }
 
-mv_pritty() {
+function mv_pritty() {
 	string=$(echo $1 | sed 's/ /_/g')
 	mv $1 ${string:l}
 	e_success "Archivo renombrado a ${string:l}"
 }
 
-cp_and_notify() {
+function cp_and_notify() {
 	cp -rp $1 $2
 	curl -H "Title: PC" -H "tags: computer" -H "Priority: high" -d "Se copio correctamente $1 a $2" ntfy.sh/$TOPICO_CP
 }
 
-search_in_all_folders() {
+function search_in_all_folders() {
 	if [ -z "$1" ]; then
 		e_arrow "Que quieres buscar?\n"
 		read search
@@ -147,7 +147,7 @@ search_in_all_folders() {
 	grep -r -l "$search" .
 }
 
-kill-ps() {
+function kill-ps() {
 	if [ -z "$1" ]; then
 		e_arrow "Que proceso quieres matar?\n"
 		read process
@@ -159,4 +159,10 @@ kill-ps() {
 	e_success "Mataste $process"
 	e_arrow "ps aux | grep $process\n"
 	ps aux | grep $process
+}
+
+function log() {
+	carpeta_actual=$(basename $(pwd) | cut -d '-' -f1-2)
+	echo "[ $(date +"%d-%m-%Y %H:%M:%S") ] - " >>"$carpeta_actual.log"
+	nvim "$carpeta_actual.log"
 }
