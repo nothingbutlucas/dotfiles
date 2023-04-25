@@ -166,3 +166,16 @@ function log() {
 	echo "[ $(date +"%d-%m-%Y %H:%M:%S") ] - " >>"$carpeta_actual.log"
 	nvim "$carpeta_actual.log"
 }
+
+function how-to-decrypt() {
+	e_arrow "Lo primero es mirar el listado de discos"
+	e_success "sudo lsblk"
+	e_arrow "Una vez identificado, desencriptarlo"
+	e_success "sudo cryptsetup luksOpen /dev/sdX eldisco"
+	e_arrow "Montarlo"
+	e_success "sudo mount /dev/mapper/eldisco /mnt/eldiscomontau"
+	e_arrow "Hacer lo que tengas que hacer, desmontarlo"
+	e_success "sudo umount /mnt/eldiscomontau"
+	e_arrow "Volver a encriptarlo"
+	e_success "sudo cryptsetup luksClose eldisco"
+}
