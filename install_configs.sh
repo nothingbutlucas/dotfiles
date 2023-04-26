@@ -255,6 +255,8 @@ function identify_package_manager() {
 			package="dnf"
 		elif [ "$(command -v yum)" ]; then
 			package="yum"
+		elif [ "$(command -v pkg)" ]; then
+			package="pkg"
 		else
 			package="none"
 		fi
