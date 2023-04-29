@@ -179,3 +179,15 @@ function how-to-decrypt() {
 	e_arrow "Volver a encriptarlo"
 	e_success "sudo cryptsetup luksClose eldisco"
 }
+
+function how-to-magisk() {
+	e_arrow "Lo primero es actualizar el dispositivo"
+	e_arrow "Luego, descargar la imagen boot al dispositivo"
+	e_arrow "Patchear la imagen"
+	e_arrow "Copiar la imagen patcheada al pc"
+	e_success "sudo adb pull /sdcard/Download/magisk_patched-XXXX.img"
+	e_arrow "Reinciar a fastboot"
+	e_arrow "Flashear la imagen patcheada"
+	e_success "sudo fastboot flash boot magisk_patched-XXXX.img"
+	e_arrow "Reiniciar"
+}
