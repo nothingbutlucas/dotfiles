@@ -547,8 +547,8 @@ awful.rules.rules = {
 	{
 		rule = {},
 		properties = {
-			border_width = beautiful.border_width,
-			border_color = beautiful.border_normal,
+			border_width = 0,
+			border_color = 0,
 			focus = awful.client.focus.filter,
 			raise = true,
 			keys = clientkeys,
@@ -657,14 +657,14 @@ end)
 
 -- Custom configuration
 
-beautiful.useless_gap = 20
+-- beautiful.useless_gap = 20
 
 -- Autostart applications
 
 awful.spawn.with_shell("xset s off")
 awful.spawn.with_shell("xset -dpms")
 awful.spawn.with_shell("xset s noblank")
-awful.spawn.with_shell("picom --config ~/.picom -b")
+-- awful.spawn.with_shell("picom --config ~/.picom -b")
 awful.spawn.with_shell(home .. "/dotfiles/start_tray_apps.sh")
 awful.spawn.with_shell("xscreensaver -no-splash &")
 awful.spawn.with_shell(home .. "/dotfiles/start_polybar.sh")
