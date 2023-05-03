@@ -1,3 +1,3 @@
 #!/bin/bash
 
-curl -s "wttr.in/$CITY?format=%t+%C"
+curl -s "es.wttr.in/$CITY?format=%t+%C+☔%p"
