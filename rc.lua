@@ -231,6 +231,7 @@ awful.screen.connect_for_each_screen(function(s)
 
 	-- Each screen has its own tag table.
 	awful.tag({ "I", "II", "III", "IV", "V", "VI", "VII", "VIII", "IX" }, s, awful.layout.layouts[1])
+  s.padding = { top = 32 }
 
 	-- Create a promptbox for each screen
 	s.mypromptbox = awful.widget.prompt()
@@ -539,6 +540,7 @@ clientbuttons = gears.table.join(
 -- Set keys
 root.keys(globalkeys)
 -- }}}
+
 
 -- {{{ Rules
 -- Rules to apply to new clients (through the "manage" signal).
