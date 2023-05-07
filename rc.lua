@@ -230,8 +230,12 @@ awful.screen.connect_for_each_screen(function(s)
 	set_wallpaper(s)
 
 	-- Each screen has its own tag table.
-	awful.tag({ "I", "II", "III", "IV", "V", "VI", "VII", "VIII", "IX" }, s, awful.layout.layouts[1])
-  s.padding = { top = 32 }
+  if s.index == 1 then
+    awful.tag({ "I", "II", "III", "IV", "V"}, s, awful.layout.layouts[1])
+  else
+    awful.tag({"I~", "II~", "III~", "IV~", "V~" }, s, awful.layout.layouts[1])
+  end
+	s.padding = { top = 32 }
 
 	-- Create a promptbox for each screen
 	s.mypromptbox = awful.widget.prompt()
@@ -368,9 +372,6 @@ globalkeys = gears.table.join(
 	--          {description = "lock screen", group = "system"}),
 
 	-- Standard program
-	awful.key({ modkey }, "r", function()
-		awful.spawn("rofi -show drun")
-	end, { description = "Rofi app selector", group = "launcher" }),
 	awful.key({ modkey, "Shift" }, "f", function()
 		awful.spawn("firejail librewolf")
 	end, { description = "open librewolf", group = "launcher" }),
@@ -541,7 +542,6 @@ clientbuttons = gears.table.join(
 root.keys(globalkeys)
 -- }}}
 
-
 -- {{{ Rules
 -- Rules to apply to new clients (through the "manage" signal).
 awful.rules.rules = {
@@ -660,6 +660,9 @@ end)
 -- Custom configuration
 
 -- beautiful.useless_gap = 20
+
+-- Second screen
+awful.spawn.with_shell("xrandr --output DisplayPort-1 --primary --right-of HDMI-A-0")
 
 -- Autostart applications
 
