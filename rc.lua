@@ -231,9 +231,9 @@ awful.screen.connect_for_each_screen(function(s)
 
 	-- Each screen has its own tag table.
   if s.index == 1 then
-    awful.tag({ "I", "II", "III", "IV", "V"}, s, awful.layout.layouts[1])
+    awful.tag({ "·", "·","·","·","·","·","·","·","·",}, s, awful.layout.layouts[1])
   else
-    awful.tag({"I~", "II~", "III~", "IV~", "V~" }, s, awful.layout.layouts[1])
+    awful.tag({"~","~"}, s, awful.layout.layouts[1])
   end
 	s.padding = { top = 32 }
 
@@ -373,7 +373,7 @@ globalkeys = gears.table.join(
 
 	-- Standard program
 	awful.key({ modkey, "Shift" }, "f", function()
-		awful.spawn("firejail librewolf")
+		awful.spawn("firejail /usr/bin/librewolf")
 	end, { description = "open librewolf", group = "launcher" }),
 	awful.key({ modkey, "Shift" }, "b", function()
 		awful.spawn("firejail brave-browser")
