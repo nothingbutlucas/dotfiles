@@ -14,6 +14,8 @@ alias ttyclock='tty-clock -c -C 6 -t -B'
 # Security
 
 alias reverse_shell_ps="ps aux | grep /bin/bash/-i"
+alias block_incoming_ip="sudo iptables -A INPUT -s $1 -j DROP || echo 'Provide an IP address as argument'"
+alias block_outgoing_ip="sudo iptables -A OUTPUT -d $1 -j DROP || echo 'Provide an IP address as argument'"
 
 # Music
 
