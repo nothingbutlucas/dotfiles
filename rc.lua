@@ -326,7 +326,7 @@ globalkeys = gears.table.join(
 
 	-- Screenshot
 	awful.key({}, "Print", function()
-		awful.spawn("gnome-screenshot -a")
+		awful.spawn("flameshot gui")
 	end, { description = "screenshot", group = "hotkeys" }),
 
 	-- help
