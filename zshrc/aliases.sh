@@ -6,6 +6,7 @@ alias c="bat"
 alias ls="lsd"
 alias g="git"
 alias edit_aliases="cd ${HOME}/dotfiles/ && ls -la"
+alias which_key="xev | grep -A2 --line-buffered '^KeyRelease' | sed -n '/keycode /s/^.*keycode \([0-9]*\).* (.*, \(.*\)).*$/\1 \2/p'" # https://askubuntu.com/questions/411419/how-do-i-check-which-key-is-pressed
 
 # Fast tty-clock configuration
 
