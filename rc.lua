@@ -58,8 +58,6 @@ beautiful.init(gears.filesystem.get_themes_dir() .. "zenburn/theme.lua")
 -- Capture user home directory
 local home = os.getenv("HOME")
 
-beautiful.wallpaper = "/usr/share/backgrounds/images/wallpaper.png"
-
 -- This is used later as the default terminal and editor to run.
 
 terminal = home .. "/.cargo/bin/alacritty"
@@ -204,6 +202,18 @@ local tasklist_buttons = gears.table.join(
 	end)
 )
 
+-- {{{ Random Wallpapers
+
+-- Get the list of files from a directory. Must be all images or folders and non-empty.
+local function scanDir(directory)
+	local i, fileList, popen = 0, {}, io.popen
+	for filename in popen([[find "]] .. directory .. [[" -type f]]):lines() do
+		i = i + 1
+		fileList[i] = filename
+	end
+	return fileList
+end
+
 local function set_wallpaper(s)
 	-- Wallpaper
 	if beautiful.wallpaper then
@@ -212,9 +222,9 @@ local function set_wallpaper(s)
 		if type(wallpaper) == "function" then
 			wallpaper = wallpaper(s)
 		end
-		--gears.wallpaper.maximized(wallpaper, s, false)
+		gears.wallpaper.maximized(wallpaper, s, false)
 		--gears.wallpaper.tiled(wallpaper, s, false)
-		gears.wallpaper.centered(wallpaper, s, false)
+		-- gears.wallpaper.centered(wallpaper, s, false)
 	end
 end
 
@@ -227,15 +237,38 @@ awful.screen.connect_for_each_screen(function(s)
 	s.systray.visible = true
 
 	-- Wallpaper
-	set_wallpaper(s)
+
+  wallpaperList = scanDir(home .. "/Imagenes")
+
+  -- Apply a random wallpaper on startup.
+  gears.wallpaper.maximized(wallpaperList[math.random(1, #wallpaperList)], s, true)
+
+  -- Apply a random wallpaper every changeTime seconds.
+  changeTime = 600
+  wallpaperTimer = timer({ timeout = changeTime })
+  wallpaperTimer:connect_signal("timeout", function()
+    gears.wallpaper.maximized(wallpaperList[math.random(1, #wallpaperList)], s, true)
+
+    -- stop the timer (we don't need multiple instances running at the same time)
+    wallpaperTimer:stop()
+
+    --restart the timer
+    wallpaperTimer.timeout = changeTime
+    wallpaperTimer:start()
+  end)
+
+  -- initial start when rc.lua is first run
+  wallpaperTimer:start()
+
+
 
 	-- Each screen has its own tag table.
-  if s.index == 1 then
-    awful.tag({ "·", "·","·","·","·","·","·","·","·",}, s, awful.layout.layouts[1])
-  else
-    awful.tag({"~","~"}, s, awful.layout.layouts[1])
-  end
-	s.padding = { top = 32 }
+	if s.index == 1 then
+		awful.tag({ "·", "·", "·", "·", "·", "·", "·", "·", "·" }, s, awful.layout.layouts[1])
+	else
+		awful.tag({ "~", "~" }, s, awful.layout.layouts[1])
+	end
+	s.padding = { top = 50 }
 
 	-- Create a promptbox for each screen
 	s.mypromptbox = awful.widget.prompt()
@@ -659,7 +692,7 @@ end)
 
 -- Custom configuration
 
--- beautiful.useless_gap = 20
+beautiful.useless_gap = 5
 
 -- Second screen
 awful.spawn.with_shell("xrandr --output DisplayPort-1 --primary --right-of HDMI-A-0")
@@ -676,7 +709,7 @@ awful.spawn.with_shell(home .. "/dotfiles/start_polybar.sh")
 awful.spawn.with_shell("nm-applet")
 
 -- Default volume to 30% at startup
-awful.spawn.with_shell("amixer -D pulse sset Master 30%")
+awful.spawn.with_shell("amixer -D pulse sset Master 10%")
 
 -- Enable sloppy focus, so that focus follows mouse.
 client.connect_signal("mouse::enter", function(c)
