@@ -268,7 +268,7 @@ awful.screen.connect_for_each_screen(function(s)
 	else
 		awful.tag({ "~", "~" }, s, awful.layout.layouts[1])
 	end
-	s.padding = { top = 50 }
+	s.padding = { top = 40 }
 
 	-- Create a promptbox for each screen
 	s.mypromptbox = awful.widget.prompt()
