@@ -348,9 +348,11 @@ root.buttons(gears.table.join(
 globalkeys = gears.table.join(
 	-- Volume control
 	awful.key({}, "XF86AudioRaiseVolume", function()
+    awful.spawn("pactl set-sink-mute @DEFAULT_SINK@ off")
 		awful.spawn("pactl set-sink-volume @DEFAULT_SINK@ +1%")
 	end, { description = "volume up", group = "hotkeys" }),
 	awful.key({}, "XF86AudioLowerVolume", function()
+    awful.spawn("pactl set-sink-mute @DEFAULT_SINK@ off")
 		awful.spawn("pactl set-sink-volume @DEFAULT_SINK@ -1%")
 	end, { description = "volume down", group = "hotkeys" }),
 	awful.key({}, "XF86AudioMute", function()
@@ -699,13 +701,13 @@ awful.spawn.with_shell("xrandr --output DisplayPort-1 --primary --right-of HDMI-
 
 -- Autostart applications
 
+awful.spawn.with_shell(home .. "/dotfiles/start_polybar.sh")
 awful.spawn.with_shell("xset s off")
 awful.spawn.with_shell("xset -dpms")
 awful.spawn.with_shell("xset s noblank")
 -- awful.spawn.with_shell("picom --config ~/.picom -b")
 awful.spawn.with_shell(home .. "/dotfiles/start_tray_apps.sh")
 awful.spawn.with_shell("xscreensaver -no-splash &")
-awful.spawn.with_shell(home .. "/dotfiles/start_polybar.sh")
 awful.spawn.with_shell("nm-applet")
 
 -- Default volume to 30% at startup
