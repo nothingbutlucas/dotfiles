@@ -710,8 +710,8 @@ awful.spawn.with_shell(home .. "/dotfiles/start_tray_apps.sh")
 awful.spawn.with_shell("xscreensaver -no-splash &")
 awful.spawn.with_shell("nm-applet")
 
--- Default volume to 30% at startup
-awful.spawn.with_shell("amixer -D pulse sset Master 10%")
+-- Default volume to 10% at startup
+-- awful.spawn.with_shell("amixer -D pulse sset Master 10%")
 
 -- Enable sloppy focus, so that focus follows mouse.
 client.connect_signal("mouse::enter", function(c)
