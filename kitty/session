@@ -1,0 +1,8 @@
+new_tab nvim
+cd ~
+launch nvim .
+focus
+
+new_tab
+launch pomodoro.sh
+
