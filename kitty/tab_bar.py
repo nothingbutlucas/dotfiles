@@ -9,8 +9,28 @@ from kitty.tab_bar import (
     draw_attributed_string,
     draw_tab_with_powerline,
 )
+import socket
 
 timer_id = None
+
+def is_connected():
+    # https://stackoverflow.com/questions/20913411/test-if-an-internet-connection-is-present-in-python
+    try:
+        # connect to the host -- tells us if the host is actually
+        # reachable
+        sock = socket.create_connection(("1.1.1.1", 53))
+        if sock:
+            sock.close()
+        return True
+    except OSError:
+        pass
+    return False
+
+def internet_string():
+    if is_connected():
+        return "直"
+    else:
+        return "睊"
 
 def draw_tab(
     draw_data: DrawData,
@@ -52,17 +72,18 @@ def draw_right_status(draw_data: DrawData, screen: Screen) -> None:
 
     tab_bg = as_rgb(int(draw_data.inactive_bg))
     tab_fg = as_rgb(int(draw_data.inactive_fg))
+    tab_bg_active = as_rgb(int(draw_data.active_bg))
     for cell in cells:
         # Draw the separator
         screen.cursor.fg = tab_fg
         screen.draw(" ⋮ ")
-        screen.cursor.fg = tab_fg
+        screen.cursor.fg = tab_bg_active
         screen.cursor.bg = tab_bg
         screen.draw(f"{cell}")
 
 def create_cells() -> list[str]:
     now = datetime.datetime.now()
     return [
-        now.strftime("%d·%m·%Y"),
-        now.strftime("%H·%M"),
+        internet_string(),
+        now.strftime("%d·%m·%Y ~ %H·%M"),
     ]
