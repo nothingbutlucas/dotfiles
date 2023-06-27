@@ -595,6 +595,9 @@ awful.rules.rules = {
 		},
 	},
 
+  -- Prompt / Popup windows
+  { rule = {}, properties = { placement = awful.placement.centered } },
+
 	-- Floating clients.
 	{
 		rule_any = {
