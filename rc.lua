@@ -92,6 +92,9 @@ awful.layout.layouts = {
 }
 -- }}}
 
+-- Polybar
+awful.spawn.with_shell(home .. "/dotfiles/start_polybar.sh")
+
 -- {{{ Menu
 -- Create a launcher widget and a main menu
 myawesomemenu = {
@@ -238,7 +241,7 @@ awful.screen.connect_for_each_screen(function(s)
 
 	-- Wallpaper
 
-  wallpaperList = scanDir(home .. "/Imagenes")
+  wallpaperList = scanDir(home .. "/Pictures")
 
   -- Apply a random wallpaper on startup.
   gears.wallpaper.maximized(wallpaperList[math.random(1, #wallpaperList)], s, true)
@@ -348,15 +351,15 @@ root.buttons(gears.table.join(
 globalkeys = gears.table.join(
 	-- Volume control
 	awful.key({}, "XF86AudioRaiseVolume", function()
-    awful.spawn("pactl set-sink-mute @DEFAULT_SINK@ off")
-		awful.spawn("pactl set-sink-volume @DEFAULT_SINK@ +1%")
+    awful.spawn("amixer -c 1 set Master unmute")
+    awful.spawn("amixer -c 1 set Master 1%+")
 	end, { description = "volume up", group = "hotkeys" }),
 	awful.key({}, "XF86AudioLowerVolume", function()
-    awful.spawn("pactl set-sink-mute @DEFAULT_SINK@ off")
-		awful.spawn("pactl set-sink-volume @DEFAULT_SINK@ -1%")
+    awful.spawn("amixer -c 1 set Master unmute")
+    awful.spawn("amixer -c 1 set Master 1%-")
 	end, { description = "volume down", group = "hotkeys" }),
 	awful.key({}, "XF86AudioMute", function()
-		awful.spawn("pactl set-sink-mute @DEFAULT_SINK@ toggle")
+    awful.spawn("amixer -c 1 set Master toggle")
 	end, { description = "toggle mute", group = "hotkeys" }),
 
 	-- Screenshot
@@ -642,6 +645,11 @@ awful.rules.rules = {
 }
 -- }}}
 
+-- Center notifications
+for _, preset in pairs(naughty.config.presets) do
+    preset.position = "bottom_middle"
+end
+
 -- {{{ Signals
 -- Signal function to execute when a new client appears.
 client.connect_signal("manage", function(c)
@@ -704,7 +712,6 @@ awful.spawn.with_shell("xrandr --output DisplayPort-1 --primary --right-of HDMI-
 
 -- Autostart applications
 
-awful.spawn.with_shell(home .. "/dotfiles/start_polybar.sh")
 awful.spawn.with_shell("xset s off")
 awful.spawn.with_shell("xset -dpms")
 awful.spawn.with_shell("xset s noblank")
