@@ -39,6 +39,10 @@ zstyle ':completion:*' verbose true
 zstyle ':completion:*:*:kill:*:processes' list-colors '=(#b) #([0-9]#)*=0=01;31'
 zstyle ':completion:*:kill:*' command 'ps -u $USER -o pid,%cpu,tty,cputime,cmd'
 
+source /usr/share/doc/fzf/examples/key-bindings.zsh
+
+source /usr/share/doc/fzf/examples/completion.zsh
+
 PATH=$HOME/bin:/usr/local/bin:/bin:/usr/local/sbin:/usr/sbin:/sbin:/usr/bin:$HOME/.config/nvim/:$HOME/.cargo/bin/:$HOME/.local/bin:/usr/local/lib/:$PATH:
 
 xrdb ~/.Xdefaults
