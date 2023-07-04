@@ -84,6 +84,6 @@ def draw_right_status(draw_data: DrawData, screen: Screen) -> None:
 def create_cells() -> list[str]:
     now = datetime.datetime.now()
     return [
-        internet_string(),
+        # internet_string(),
         now.strftime("%d·%m·%Y ~ %H·%M"),
     ]
