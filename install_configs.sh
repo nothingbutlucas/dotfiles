@@ -9,14 +9,22 @@
 
 # Colours and uses
 
-red='\033[0;31m'    # Something went wrong
-green='\033[0;32m'  # Something went well
-yellow='\033[0;33m' # Warning
-blue='\033[0;34m'   # Info
-purple='\033[0;35m' # When asking something to the user
-cyan='\033[0;36m'   # Something is happening
-grey='\033[0;37m'   # Show a command to the user
-nc='\033[0m'        # No Color
+red="\e[31m"
+green="\e[32m"
+yellow="\e[33m"
+blue="\e[34m"
+purple="\e[35m"
+cyan="\e[36m"
+cmd="\e[37m"
+nc="\e[0m"
+
+wrong="${red}"
+good="${green}"
+warn="${yellow}"
+info="${blue}"
+ask="${purple}"
+doing="${cyan}"
+cmd="${grey}"
 
 sign_wrong="${wrong}[-]${nc}"
 sign_good="${good}[+]${nc}"
@@ -26,14 +34,6 @@ sign_ask="${ask}[?]${nc}"
 sign_doing="${doing}[~]${nc}"
 sign_cmd="${cmd}[>]${nc}"
 sign_debug="${warn}[d]${nc}"
-
-wrong="${red}"
-good="${green}"
-warn="${yellow}"
-info="${blue}"
-ask="${purple}"
-doing="${cyan}"
-cmd="${grey}"
 
 error_logs=$(pwd)/error_logs.log
 dotfiles=(.bashrc .zshrc .tmux.conf .gitconfig .gitignore .Xdefaults rc.lua .picom .ideavimrc kitty)
@@ -75,7 +75,7 @@ function is_installed() {
 	echo -e "${sign_cmd}$ command -v ${program} ${nc}"
 	sleep 0.05
 	if command -v "${program}" 1>/dev/null 2>>"${error_logs}"; then
-		echo -e "${sign_good} ${program} está instalado"
+		echo -e "${sign_info} ${program} está instalado"
 		return 0
 	else
 		echo -e "${sign_wrong} ${program} no está instalado"
@@ -115,34 +115,79 @@ function batcat() {
 }
 
 function fonts() {
-	# TODO Comprobar si ya existen las fuentes
-	echo -e "${sign_good} Vamos a descargar la fuente HackNerdFont de https://www.nerdfonts.com/"
-	wget -q https://github.com/ryanoasis/nerd-fonts/releases/download/v3.0.2/Hack.zip
-	# Comprobamos que el archivo Hack.zip exista
-	if [ ! -f Hack.zip ]; then
-		echo -e "${sign_wrong} No se ha podido descargar la fuente HackNerdFont"
+	# Comprobar si las fuentes existen
+	echo -e "${sign_good} Comprobando si tienes instaladas las fuentes HackNerdFont..."
+	fonts_files=$(ls /usr/local/share/fonts/ | grep Hack)
+	if [ -z "${fonts_files}" ]; then
+		echo -e "${sign_wrong} No tienes instaladas las fuentes HackNerdFont"
+		echo -e "${sign_good} Vamos a instalar las fuentes HackNerdFont"
+		echo -e "${sign_good} Vamos a descargar la fuente HackNerdFont de https://www.nerdfonts.com/"
+		wget -q https://github.com/ryanoasis/nerd-fonts/releases/download/v3.0.2/Hack.zip
+		# Comprobamos que el archivo Hack.zip exista
+		if [ ! -f Hack.zip ]; then
+			echo -e "${sign_wrong} No se ha podido descargar la fuente HackNerdFont"
+		else
+			echo -e "${sign_doing} Voy a necesitar permisos de sudo para poder descomprimir las fuentes en /usr/local/share/fonts"
+			unzip -q Hack.zip -d /usr/local/share/fonts/
+		fi
 	else
-		echo -e "${sign_doing} Voy a necesitar permisos de sudo para poder descomprimir las fuentes en /usr/local/share/fonts"
-		unzip -q Hack.zip -d /usr/local/share/fonts/
+		echo -e "${sign_info} Tienes instaladas las fuentes HackNerdFont"
+		echo -e "${sign_warn} Saltando instalación de ${program}..."
 	fi
+
 }
 
 function plugins_zsh() {
-	# TODO Comprobar si ya existen los plugins
 	echo -e "${sign_good} Vamos a crear la carpeta para los plugins de la zsh"
 	actual_path=$(pwd)
-	sudo mkdir -p /usr/share/zsh-plugins/
-	cd /usr/share/zsh-plugins/ || return
+	zsh_plugins_path="/usr/share/zsh-plugins/"
+	sudo mkdir -p "${zsh_plugins_path}"
+	cd ${zsh_plugins_path} || return
 	sleep 0.04
 	echo -e "${sign_doing} Voy a necesitar permisos de sudo para poder descargar los plugins de la zsh en /usr/share/zsh-pugins/"
-	{
-		sudo wget -q "https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/plugins/sudo/sudo.plugin.zsh"
-		sudo wget -q "https://raw.githubusercontent.com/zsh-users/zsh-autosuggestions/master/zsh-autosuggestions.zsh"
-		sudo wget -q "https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/plugins/jsontools/jsontools.plugin.zsh"
-		sudo git clone https://github.com/zsh-users/zsh-syntax-highlighting.git
-	} 2>>"${error_logs}"
-	rm -rf wget-log*
-	cd - || cd "$actual_path" || return
+	# Comprobar si los plugins ya existen
+	echo -e "${sign_good} Comprobando si tienes instalados los plugins de la zsh..."
+	zsh_plugins=$(ls "${zsh_plugins_path}")
+	sudo_plugin_zsh=0
+	zsh_auto_suggestions=0
+	jsontools_plugin_zsh=0
+	zsh_syntax_highlighting=0
+	for x in $zsh_plugins; do
+		if [ "$x" == "sudo.plugin.zsh" ]; then
+			sudo_plugin_zsh=1
+		elif [ "$x" == "zsh-autosuggestions.zsh" ]; then
+			zsh_auto_suggestions=1
+		elif [ "$x" == "jsontools.plugin.zsh" ]; then
+			jsontools_plugin_zsh=1
+		elif [ "$x" == "zsh-syntax-highlighting" ]; then
+			zsh_syntax_highlighting=1
+		fi
+	done
+	if [ $sudo_plugin_zsh -eq 0 ]; then
+		echo -e "${sign_doing} Descargando el plugin sudo.plugin.zsh..."
+		sudo wget -q "https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/plugins/sudo/sudo.plugin.zsh" 2>>"${error_logs}"
+	else
+		echo -e "${sign_info} Tienes instalado el plugin sudo.plugin.zsh"
+	fi
+	if [ $zsh_auto_suggestions -eq 0 ]; then
+		echo -e "${sign_doing} Descargando el plugin zsh-autosuggestions.zsh..."
+		sudo wget -q "https://raw.githubusercontent.com/zsh-users/zsh-autosuggestions/master/zsh-autosuggestions.zsh" 2>>"${error_logs}"
+	else
+		echo -e "${sign_info} Tienes instalado el plugin zsh-autosuggestions.zsh"
+	fi
+	if [ $jsontools_plugin_zsh -eq 0 ]; then
+		echo -e "${sign_doing} Descargando el plugin jsontools.plugin.zsh..."
+		sudo wget -q "https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/plugins/jsontools/jsontools.plugin.zsh" 2>>"${error_logs}"
+	else
+		echo -e "${sign_info} Tienes instalado el plugin jsontools.plugin.zsh"
+	fi
+	if [ "$zsh_syntax_highlighting" -eq 0 ]; then
+		echo -e "${sign_doing} Descargando el plugin zsh-syntax-highlighting..."
+		sudo git clone https://github.com/zsh-users/zsh-syntax-highlighting.git 2>>"${error_logs}"
+		echo -e "${sign_doing} Instalando el plugin zsh-syntax-highlighting..."
+	fi
+	cd "$actual_path"
+	echo ""
 }
 
 function zsh() {
