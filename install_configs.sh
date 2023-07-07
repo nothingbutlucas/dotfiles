@@ -104,13 +104,31 @@ function install() {
 }
 
 function pre_requisites() {
-	programs=(git wget curl)
+	programs=(git wget curl unzip)
 	for program in "${programs[@]}"; do
 		install "${program}"
 	done
 }
 
+function batcat() {
+	install "bat"
+}
+
+function fonts() {
+	# TODO Comprobar si ya existen las fuentes
+	echo -e "${sign_good} Vamos a descargar la fuente HackNerdFont de https://www.nerdfonts.com/"
+	wget -q https://github.com/ryanoasis/nerd-fonts/releases/download/v3.0.2/Hack.zip
+	# Comprobamos que el archivo Hack.zip exista
+	if [ ! -f Hack.zip ]; then
+		echo -e "${sign_wrong} No se ha podido descargar la fuente HackNerdFont"
+	else
+		echo -e "${sign_doing} Voy a necesitar permisos de sudo para poder descomprimir las fuentes en /usr/local/share/fonts"
+		unzip -q Hack.zip -d /usr/local/share/fonts/
+	fi
+}
+
 function plugins_zsh() {
+	# TODO Comprobar si ya existen los plugins
 	echo -e "${sign_good} Vamos a crear la carpeta para los plugins de la zsh"
 	actual_path=$(pwd)
 	sudo mkdir -p /usr/share/zsh-plugins/
@@ -118,9 +136,9 @@ function plugins_zsh() {
 	sleep 0.04
 	echo -e "${sign_doing} Voy a necesitar permisos de sudo para poder descargar los plugins de la zsh en /usr/share/zsh-pugins/"
 	{
-		sudo wget -b -t 5 "https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/plugins/sudo/sudo.plugin.zsh"
-		sudo wget -b -t 5 "https://raw.githubusercontent.com/zsh-users/zsh-autosuggestions/master/zsh-autosuggestions.zsh"
-		sudo wget -b -t 5 "https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/plugins/jsontools/jsontools.plugin.zsh"
+		sudo wget -q "https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/plugins/sudo/sudo.plugin.zsh"
+		sudo wget -q "https://raw.githubusercontent.com/zsh-users/zsh-autosuggestions/master/zsh-autosuggestions.zsh"
+		sudo wget -q "https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/plugins/jsontools/jsontools.plugin.zsh"
 		sudo git clone https://github.com/zsh-users/zsh-syntax-highlighting.git
 	} 2>>"${error_logs}"
 	rm -rf wget-log*
@@ -270,9 +288,9 @@ function main() {
 	PS3="[?]: "
 	echo -e "${sign_ask} Elige un número para instalar lo que quieras:\n"
 	if [[ ${package} = "none" ]]; then
-		programs=(backup powerlevel10k plugins_zsh dotfiles-installation lsd_i386 lsd_amd64 salir)
+		programs=(backup powerlevel10k plugins_zsh dotfiles-installation lsd_i386 lsd_amd64 fonts salir)
 	else
-		programs=(zsh backup powerlevel10k mpv_youtube_dl dotfiles-installation tmux plugins_zsh lsd_i386 lsd_amd64 salir)
+		programs=(zsh backup powerlevel10k mpv_youtube_dl dotfiles-installation tmux plugins_zsh lsd_i386 lsd_amd64 fonts batcat salir)
 	fi
 	while [[ 1 -eq 1 ]]; do
 		select program in "${programs[@]}"; do
