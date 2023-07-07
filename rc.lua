@@ -271,7 +271,7 @@ awful.screen.connect_for_each_screen(function(s)
 	else
 		awful.tag({ "~", "~" }, s, awful.layout.layouts[1])
 	end
-	s.padding = { top = 40 }
+	-- s.padding = { top = 40 }
 
 	-- Create a promptbox for each screen
 	s.mypromptbox = awful.widget.prompt()
@@ -459,10 +459,6 @@ globalkeys = gears.table.join(
 	end, { description = "restore minimized", group = "client" }),
 
 	-- Prompt
-	awful.key({ modkey }, "r", function()
-		awful.screen.focused().mypromptbox:run()
-	end, { description = "run prompt", group = "launcher" }),
-
 	awful.key({ modkey }, "x", function()
 		awful.prompt.run({
 			prompt = "Run Lua code: ",
@@ -473,9 +469,9 @@ globalkeys = gears.table.join(
 	end, { description = "lua execute prompt", group = "awesome" }),
 	-- Menubar
 	awful.key({ modkey }, "p", function()
-		menubar.show()
-	end, { description = "show the menubar", group = "launcher" })
-)
+		awful.spawn(home .. "/.config/rofi/scripts/launcher_t5")
+	end, { description = "rofi", group = "launcher" })
+  )
 
 clientkeys = gears.table.join(
 	awful.key({ modkey }, "f", function(c)
