@@ -43,13 +43,15 @@ source /usr/share/doc/fzf/examples/key-bindings.zsh
 
 source /usr/share/doc/fzf/examples/completion.zsh
 
-PATH=$HOME/bin:/usr/local/bin:/bin:/usr/local/sbin:/usr/sbin:/sbin:/usr/bin:$HOME/.config/nvim/:$HOME/.cargo/bin/:$HOME/.local/bin:/usr/local/lib/:$HOME/go/bin/:$PATH:
+PATH=$HOME/bin:/usr/local/bin:/bin:/usr/local/sbin:/usr/sbin:/sbin:/usr/bin:$HOME/.config/nvim/:$HOME/.cargo/bin/:$HOME/.local/bin:/usr/local/lib/:$HOME/go/bin/:$PATH
 
 xrdb ~/.Xdefaults
 
 export PKG_CONFIG_PATH=/usr/local/lib/pkgconfig
 export LD_LIBRARY_PATH=/usr/local/lib/
-
+export DENO_INSTALL="$HOME/.deno"
+export PATH="$DENO_INSTALL/bin:$PATH"
 export NVM_DIR="$HOME/.nvm"
+export OPENSCADPATH=$HOME/.local/share/OpenSCAD/libraries/
 [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
 [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
