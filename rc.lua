@@ -139,7 +139,7 @@ mymainmenu = awful.menu({
 				awesome.quit()
 			end,
 		},
-		{ " Reboot", "reboot" },
+		{ " Reboot", "shutdown -r now" },
 		{ " Shutdown", "shutdown now" },
 	},
 })
@@ -351,15 +351,15 @@ root.buttons(gears.table.join(
 globalkeys = gears.table.join(
 	-- Volume control
 	awful.key({}, "XF86AudioRaiseVolume", function()
-    awful.spawn("amixer -c 1 set Master unmute")
-    awful.spawn("amixer -c 1 set Master 1%+")
+    awful.spawn("amixer set Master unmute")
+    awful.spawn("amixer set Master 1%+")
 	end, { description = "volume up", group = "hotkeys" }),
 	awful.key({}, "XF86AudioLowerVolume", function()
-    awful.spawn("amixer -c 1 set Master unmute")
-    awful.spawn("amixer -c 1 set Master 1%-")
+    awful.spawn("amixer set Master unmute")
+    awful.spawn("amixer set Master 1%-")
 	end, { description = "volume down", group = "hotkeys" }),
 	awful.key({}, "XF86AudioMute", function()
-    awful.spawn("amixer -c 1 set Master toggle")
+    awful.spawn("amixer set Master toggle")
 	end, { description = "toggle mute", group = "hotkeys" }),
 
 	-- Screenshot
@@ -414,7 +414,7 @@ globalkeys = gears.table.join(
 		awful.spawn("firejail /usr/bin/librewolf")
 	end, { description = "open librewolf", group = "launcher" }),
 	awful.key({ modkey, "Shift" }, "b", function()
-		awful.spawn("firejail brave-browser")
+		awful.spawn("brave-browser")
 	end, { description = "open brave", group = "launcher" }),
 	awful.key({ modkey, "Shift" }, "t", function()
 		awful.spawn("telegram-desktop")
