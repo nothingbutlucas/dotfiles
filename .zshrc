@@ -23,3 +23,5 @@ done
 (( ! ${+functions[p10k-instant-prompt-finalize]} )) || p10k-instant-prompt-finalize
 
 #(( ! ${+functions[p10k]} )) || p10k finalize
+
+eval $(thefuck --alias)
