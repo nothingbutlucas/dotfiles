@@ -43,7 +43,7 @@ source /usr/share/doc/fzf/examples/key-bindings.zsh
 
 source /usr/share/doc/fzf/examples/completion.zsh
 
-PATH=$HOME/bin:/usr/local/bin:/bin:/usr/local/sbin:/usr/sbin:/sbin:/usr/bin:$HOME/.config/nvim/:$HOME/.cargo/bin/:$HOME/.local/bin:/usr/local/lib/:$HOME/go/bin/:$PATH
+PATH=/usr/local/glibc-2.38/bin/:$HOME/bin:/usr/local/bin:/bin:/usr/local/sbin:/usr/sbin:/sbin:/usr/bin:$HOME/.config/nvim/:$HOME/.cargo/bin/:$HOME/.local/bin:/usr/local/lib/:$HOME/go/bin/:$PATH
 
 xrdb ~/.Xdefaults
 
