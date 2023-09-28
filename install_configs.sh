@@ -285,9 +285,10 @@ function dotfiles-installation() {
 
 	rm -rf "${HOME}"/dotfiles/bashrc/aliases.sh
 	rm -rf "${HOME}"/dotfiles/bashrc/utils.sh
-	ln -s -n "${HOME}/dotfiles/zshrc/aliases.sh" "${HOME}/dotfiles/bashrc/aliases.sh"
-	ln -s -n "${HOME}/dotfiles/zshrc/utils.sh" "${HOME}/dotfiles/bashrc/utils.sh"
-	ln -s -n "${HOME}/dotfiles/kitty" "${HOME}/.config/kitty"
+	ln -s "${HOME}/dotfiles/zshrc/aliases.sh" "${HOME}/dotfiles/bashrc/aliases.sh"
+	ln -s "${HOME}/dotfiles/zshrc/utils.sh" "${HOME}/dotfiles/bashrc/utils.sh"
+	ln -s "${HOME}/dotfiles/kitty" "${HOME}/.config/kitty"
+	ln -s "${HOME}/dotfiles/commit.sh" "${HOME}/.local/bin/commit.sh"
 	sleep 0.05
 }
 
