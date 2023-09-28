@@ -183,6 +183,7 @@ function how-to-decrypt() {
 function how-to-magisk() {
 	e_arrow "Lo primero es actualizar el dispositivo"
 	e_arrow "Luego, descargar la imagen boot al dispositivo"
+	e_arrow "https://download.lineageos.org/devices/enchilada/builds"
 	e_arrow "Patchear la imagen"
 	e_arrow "Copiar la imagen patcheada al pc"
 	e_success "sudo adb pull /sdcard/Download/magisk_patched-XXXX.img"
