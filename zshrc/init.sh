@@ -53,5 +53,34 @@ export DENO_INSTALL="$HOME/.deno"
 export PATH="$DENO_INSTALL/bin:$PATH"
 export NVM_DIR="$HOME/.nvm"
 export OPENSCADPATH=$HOME/.local/share/OpenSCAD/libraries/
+
+# clipbard variables
+
+export CLIPBOARD_NOAUDIO=1
+export CLIPBOARD_EDITOR=nvim
+export CLIPBOARD_THEME=green
+
+# gum variables
+
+nothing_but_lucas_green="#BFEA00"
+
+export BORDER="rounded"
+export MARGIN="1 1"
+export PADDING="1 1"
+export ALIGN="center"
+export BOLD=1
+export BORDER_FOREGROUND=$nothing_but_lucas_green
+export GUM_CHOOSE_CURSOR="~> "
+export GUM_CHOOSE_CURSOR_PREFIX="[ ] "
+export GUM_CHOOSE_SELECTED_PREFIX="[*] "
+export GUM_CHOOSE_UNSELECTED_PREFIX="[ ] "
+export GUM_CHOOSE_CURSOR_FOREGROUND=$nothing_but_lucas_green
+export GUM_CHOOSE_SELECTED_FOREGROUND=$nothing_but_lucas_green
+export GUM_SPIN_SPINNER="pulse"
+export GUM_SPIN_SPINNER_FOREGROUND=$nothing_but_lucas_green
+export GUM_CONFIRM_SELECTED_BACKGROUND=$nothing_but_lucas_green
+export GUM_TABLE_HEADER_FOREGROUND=$nothing_but_lucas_green
+export GUM_CHOOSE_HEADER_FOREGROUND=$nothing_but_lucas_green
+
 [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
 [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
