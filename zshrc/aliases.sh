@@ -19,10 +19,10 @@ alias block_incoming_ip="sudo iptables -A INPUT -s $1 -j DROP || echo 'Provide a
 alias block_outgoing_ip="sudo iptables -A OUTPUT -d $1 -j DROP || echo 'Provide an IP address as argument'"
 alias mouse_jiggler="while true; do xdotool mousemove_relative 1 1; sleep 1; xdotool mousemove_relative -- -1 -1; sleep 1; done"
 
-# Music
-
-alias music='cat ${HOME}/dotfiles/zshrc/music.sh | sed "s/=/ /g" | awk "{print \$2}"'
-
 # unetbootin
 
 alias unetbootin='sudo QT_X11_NO_MITSHM=1 /usr/bin/unetbootin'
+
+# Clipboard
+
+alias cb='flatpak run app.getclipboard.Clipboard'
