@@ -1,7 +1,7 @@
 # Este es el archivo de configuración de Git por usuario.
 [user]
-	name = user
-	email = example@mail.com
+	name = nothingbutlucas
+	email = lucasblancodev@gmail.com
 [alias]
 	ec = config --global -e
 	co = checkout
