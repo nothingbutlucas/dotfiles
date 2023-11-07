@@ -192,3 +192,9 @@ function how-to-magisk() {
 	e_success "sudo fastboot flash boot magisk_patched-XXXX.img"
 	e_arrow "Reiniciar"
 }
+
+function how-to-windows-on-grub(){
+  e_arrow "Check the /etc/default/grub"
+  e_arrow "GRUB_DISABLE_OS_PROBER=false"
+  e_arrow "sudo update-grub"
+}
