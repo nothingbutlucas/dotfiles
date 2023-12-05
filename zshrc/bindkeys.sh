@@ -6,6 +6,6 @@ bindkey "^[[3~" delete-char
 bindkey "^[[1;3C" forward-word
 bindkey "^[[1;3D" backward-word
 
-if [ $(grep "Debian" /etc/os-release)]; then
+if [ "$(grep -q  Debian /etc/os-release)" ]; then
 	bindkey '^R' fzf-history-widget
 fi

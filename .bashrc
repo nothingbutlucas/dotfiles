@@ -16,3 +16,5 @@ done
 
 PS1="$USER->\W/\$: "
 . "$HOME/.cargo/env"
+
+[ -f ~/.fzf.bash ] && source ~/.fzf.bash

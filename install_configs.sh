@@ -15,7 +15,7 @@ yellow="\e[33m"
 blue="\e[34m"
 purple="\e[35m"
 cyan="\e[36m"
-cmd="\e[37m"
+grey="\e[37m"
 nc="\e[0m"
 
 wrong="${red}"

@@ -241,29 +241,30 @@ awful.screen.connect_for_each_screen(function(s)
 
 	-- Wallpaper
 
-  wallpaperList = scanDir(home .. "/Pictures")
+	-- wallpaperList = scanDir(home .. "/Pictures/actual")
 
-  -- Apply a random wallpaper on startup.
-  gears.wallpaper.maximized(wallpaperList[math.random(1, #wallpaperList)], s, true)
+	-- Set wallpaper
+  gears.wallpaper.maximized(home .. "/Pictures/actual/background.png", s, true)
 
-  -- Apply a random wallpaper every changeTime seconds.
-  changeTime = 600
-  wallpaperTimer = timer({ timeout = changeTime })
-  wallpaperTimer:connect_signal("timeout", function()
-    gears.wallpaper.maximized(wallpaperList[math.random(1, #wallpaperList)], s, true)
+	-- Apply a random wallpaper on startup.
+	-- gears.wallpaper.maximized(wallpaperList[math.random(1, #wallpaperList)], s, true)
 
-    -- stop the timer (we don't need multiple instances running at the same time)
-    wallpaperTimer:stop()
+	-- Apply a random wallpaper every changeTime seconds.
+	-- changeTime = 600
+	-- wallpaperTimer = timer({ timeout = changeTime })
+	-- wallpaperTimer:connect_signal("timeout", function()
+	-- gears.wallpaper.maximized(wallpaperList[math.random(1, #wallpaperList)], s, true)
 
-    --restart the timer
-    wallpaperTimer.timeout = changeTime
-    wallpaperTimer:start()
-  end)
+	-- stop the timer (we don't need multiple instances running at the same time)
+	-- wallpaperTimer:stop()
 
-  -- initial start when rc.lua is first run
-  wallpaperTimer:start()
+	--restart the timer
+	-- wallpaperTimer.timeout = changeTime
+	-- wallpaperTimer:start()
+	-- end)
 
-
+	-- initial start when rc.lua is first run
+	-- wallpaperTimer:start()
 
 	-- Each screen has its own tag table.
 	if s.index == 1 then
@@ -351,15 +352,15 @@ root.buttons(gears.table.join(
 globalkeys = gears.table.join(
 	-- Volume control
 	awful.key({}, "XF86AudioRaiseVolume", function()
-    awful.spawn("amixer set Master unmute")
-    awful.spawn("amixer set Master 1%+")
+		awful.spawn("amixer set Master unmute")
+		awful.spawn("amixer set Master 1%+")
 	end, { description = "volume up", group = "hotkeys" }),
 	awful.key({}, "XF86AudioLowerVolume", function()
-    awful.spawn("amixer set Master unmute")
-    awful.spawn("amixer set Master 1%-")
+		awful.spawn("amixer set Master unmute")
+		awful.spawn("amixer set Master 1%-")
 	end, { description = "volume down", group = "hotkeys" }),
 	awful.key({}, "XF86AudioMute", function()
-    awful.spawn("amixer set Master toggle")
+		awful.spawn("amixer set Master toggle")
 	end, { description = "toggle mute", group = "hotkeys" }),
 
 	-- Screenshot
@@ -413,6 +414,14 @@ globalkeys = gears.table.join(
 	awful.key({ modkey, "Shift" }, "f", function()
 		awful.spawn("firejail /usr/bin/librewolf")
 	end, { description = "open librewolf", group = "launcher" }),
+  awful.key({ modkey, "Shift" }, "m", function()
+    awful.spawn(home .. "/.local/bin/open_mullbad.sh")
+  end, {description = "open Mullvad", group = "launcher"}
+  ),
+  awful.key({ modkey, "Shift" }, "t", function()
+    awful.spawn(home .. "/.local/bin/open_tor_browser.sh")
+  end, {description = "open Tor", group = "launcher"}
+  ),
 	awful.key({ modkey, "Shift" }, "b", function()
 		awful.spawn("brave-browser")
 	end, { description = "open brave", group = "launcher" }),
@@ -471,7 +480,7 @@ globalkeys = gears.table.join(
 	awful.key({ modkey }, "p", function()
 		awful.spawn(home .. "/.config/rofi/scripts/launcher_t5")
 	end, { description = "rofi", group = "launcher" })
-  )
+)
 
 clientkeys = gears.table.join(
 	awful.key({ modkey }, "f", function(c)
@@ -594,8 +603,8 @@ awful.rules.rules = {
 		},
 	},
 
-  -- Prompt / Popup windows
-  { rule = {}, properties = { placement = awful.placement.centered } },
+	-- Prompt / Popup windows
+	{ rule = {}, properties = { placement = awful.placement.centered } },
 
 	-- Floating clients.
 	{
@@ -643,7 +652,7 @@ awful.rules.rules = {
 
 -- Center notifications
 for _, preset in pairs(naughty.config.presets) do
-    preset.position = "bottom_middle"
+	preset.position = "bottom_middle"
 end
 
 -- {{{ Signals
@@ -704,7 +713,7 @@ end)
 beautiful.useless_gap = 5
 
 -- Second screen
-awful.spawn.with_shell("xrandr --output DisplayPort-1 --primary --right-of HDMI-A-0")
+awful.spawn.with_shell("xrandr --output HDMI-A-0 --primary --left-of DisplayPort-0")
 
 -- Autostart applications
 
