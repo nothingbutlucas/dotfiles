@@ -1,9 +1,10 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
-weather=$(curl -s "es.wttr.in/$CITY?format=%t+%C+☔%p" || echo "No weather info available")
+weather=$(curl -s "wttr.in/$CITY?m&format=%t+%C+☔%p&lang=es" || echo "No weather info available")
 
 if [[ "$weather" == "Unknown"* ]]; then
 	echo ""
 else
 	echo "$weather"
+
 fi
