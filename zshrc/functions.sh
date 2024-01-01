@@ -177,6 +177,17 @@ function rot13() {
 	echo "$string" | tr 'A-Za-z' 'N-ZA-Mn-za-m'
 }
 
+function count() {
+	number=$1
+  if [ -z "$2" ]; then
+    unit="s"
+  else
+    unit=$2
+  fi
+	gum spin --timeout="${number}${unit}" sleep "${number}${unit}"
+  notify-send "Countdown" "Countdown of $number finished" -i /usr/share/images/vendor-logos/logo.svg
+}
+
 function how-to-decrypt() {
 	e_arrow "Lo primero es mirar el listado de discos"
 	e_success "sudo lsblk"
