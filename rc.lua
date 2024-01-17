@@ -242,117 +242,115 @@ end
 screen.connect_signal("property::geometry", set_wallpaper)
 
 awful.screen.connect_for_each_screen(function(s)
-	if s.index == 2 then
-		-- Set systray
-		-- s.systray = wibox.widget.systray()
-		-- s.systray.visible = true
+	-- Set systray
+	-- s.systray = wibox.widget.systray()
+	-- s.systray.visible = true
 
-		-- Wallpaper
+	-- Wallpaper
 
-		-- wallpaperList = scanDir(home .. "/Pictures/actual")
+	-- wallpaperList = scanDir(home .. "/Pictures/actual")
 
-		-- Set wallpaper
-		gears.wallpaper.maximized(home .. "/Pictures/actual/background.png", s, true)
+	-- Set wallpaper
+	gears.wallpaper.maximized(home .. "/Pictures/actual/background.png", s, true)
 
-		-- Apply a random wallpaper on startup.
-		-- gears.wallpaper.maximized(wallpaperList[math.random(1, #wallpaperList)], s, true)
+	-- Apply a random wallpaper on startup.
+	-- gears.wallpaper.maximized(wallpaperList[math.random(1, #wallpaperList)], s, true)
 
-		-- Apply a random wallpaper every changeTime seconds.
-		-- changeTime = 600
-		-- wallpaperTimer = timer({ timeout = changeTime })
-		-- wallpaperTimer:connect_signal("timeout", function()
-		-- gears.wallpaper.maximized(wallpaperList[math.random(1, #wallpaperList)], s, true)
+	-- Apply a random wallpaper every changeTime seconds.
+	-- changeTime = 600
+	-- wallpaperTimer = timer({ timeout = changeTime })
+	-- wallpaperTimer:connect_signal("timeout", function()
+	-- gears.wallpaper.maximized(wallpaperList[math.random(1, #wallpaperList)], s, true)
 
-		-- stop the timer (we don't need multiple instances running at the same time)
-		-- wallpaperTimer:stop()
+	-- stop the timer (we don't need multiple instances running at the same time)
+	-- wallpaperTimer:stop()
 
-		--restart the timer
-		-- wallpaperTimer.timeout = changeTime
-		-- wallpaperTimer:start()
-		-- end)
+	--restart the timer
+	-- wallpaperTimer.timeout = changeTime
+	-- wallpaperTimer:start()
+	-- end)
 
-		-- initial start when rc.lua is first run
-		-- wallpaperTimer:start()
+	-- initial start when rc.lua is first run
+	-- wallpaperTimer:start()
 
-		-- Each screen has its own tag table.
-		if is_fedora() then
-			if s.index == 2 then
-				awful.tag({ "1", "2", "3", "4", "·", "·", "·", "·", "·" }, s, awful.layout.layouts[1])
-			else
-				awful.tag({ "~", "~" }, s, awful.layout.layouts[1])
-			end
+	-- Each screen has its own tag table.
+	if is_fedora() then
+		if s.index == 2 then
+			awful.tag({ "1", "2", "3", "4", "·", "·", "·", "·", "·" }, s, awful.layout.layouts[1])
 		else
-			if s.index == 1 then
-				awful.tag({ "1", "2", "3", "4", "·", "·", "·", "·", "·" }, s, awful.layout.layouts[1])
-			else
-				awful.tag({ "~", "~" }, s, awful.layout.layouts[1])
-			end
+			awful.tag({ "~", "~" }, s, awful.layout.layouts[1])
 		end
-		-- s.padding = { top = 40 }
-
-		-- Create a promptbox for each screen
-		s.mypromptbox = awful.widget.prompt()
-		-- Create an imagebox widget which will contain an icon indicating which layout we're using.
-		-- We need one layoutbox per screen.
-		s.mylayoutbox = awful.widget.layoutbox(s)
-		s.mylayoutbox:buttons(gears.table.join(
-			awful.button({}, 1, function()
-				awful.layout.inc(1)
-			end),
-			awful.button({}, 3, function()
-				awful.layout.inc(-1)
-			end),
-			awful.button({}, 4, function()
-				awful.layout.inc(1)
-			end),
-			awful.button({}, 5, function()
-				awful.layout.inc(-1)
-			end)
-		))
-		-- Create a taglist widget
-		s.mytaglist = awful.widget.taglist({
-			screen = s,
-			filter = awful.widget.taglist.filter.all,
-			buttons = taglist_buttons,
-		})
-
-		-- Create a tasklist widget
-		s.mytasklist = awful.widget.tasklist({
-			screen = s,
-			filter = awful.widget.tasklist.filter.currenttags,
-			buttons = tasklist_buttons,
-		})
-
-		-- Create the wibox
-		-- s.mywibox = awful.wibar({ position = "top", screen = s })
-		-- s.mywibox = awful.wibar({ position = "left", screen = s })
-
-		-- Add widgets to the wibox
-		-- s.mywibox:setup({
-		-- 	layout = wibox.layout.align.horizontal,
-		-- 	-- spacing = 20,
-		-- 	{ -- Left widgets
-		-- 		layout = wibox.layout.fixed.horizontal,
-		-- 		mylauncher,
-		-- 		userwidget,
-		-- 		s.mytaglist,
-		-- 		s.mypromptbox,
-		-- 	},
-		-- 	s.mytasklist, -- Middle widget
-		-- 	{ -- Right widgets
-		-- 		layout = wibox.layout.fixed.horizontal,
-		-- 		wibox.widget.textbox(" I "),
-		-- 		network_usage_monitor,
-		-- 		wibox.widget.textbox(" I "),
-		-- 		volume_widget(),
-		-- 		mykeyboardlayout,
-		-- 		s.systray,
-		-- 		mytextclock,
-		-- 		ww,
-		-- 		-- s.mylayoutbox,
-		-- 	},
-		-- })
+	else
+		if s.index == 1 then
+			awful.tag({ "1", "2", "3", "4", "·", "·", "·", "·", "·" }, s, awful.layout.layouts[1])
+		else
+			awful.tag({ "~", "~" }, s, awful.layout.layouts[1])
+		end
 	end
+	-- s.padding = { top = 40 }
+
+	-- Create a promptbox for each screen
+	s.mypromptbox = awful.widget.prompt()
+	-- Create an imagebox widget which will contain an icon indicating which layout we're using.
+	-- We need one layoutbox per screen.
+	s.mylayoutbox = awful.widget.layoutbox(s)
+	s.mylayoutbox:buttons(gears.table.join(
+		awful.button({}, 1, function()
+			awful.layout.inc(1)
+		end),
+		awful.button({}, 3, function()
+			awful.layout.inc(-1)
+		end),
+		awful.button({}, 4, function()
+			awful.layout.inc(1)
+		end),
+		awful.button({}, 5, function()
+			awful.layout.inc(-1)
+		end)
+	))
+	-- Create a taglist widget
+	s.mytaglist = awful.widget.taglist({
+		screen = s,
+		filter = awful.widget.taglist.filter.all,
+		buttons = taglist_buttons,
+	})
+
+	-- Create a tasklist widget
+	s.mytasklist = awful.widget.tasklist({
+		screen = s,
+		filter = awful.widget.tasklist.filter.currenttags,
+		buttons = tasklist_buttons,
+	})
+
+	-- Create the wibox
+	-- s.mywibox = awful.wibar({ position = "top", screen = s })
+	-- s.mywibox = awful.wibar({ position = "left", screen = s })
+
+	-- Add widgets to the wibox
+	-- s.mywibox:setup({
+	-- 	layout = wibox.layout.align.horizontal,
+	-- 	-- spacing = 20,
+	-- 	{ -- Left widgets
+	-- 		layout = wibox.layout.fixed.horizontal,
+	-- 		mylauncher,
+	-- 		userwidget,
+	-- 		s.mytaglist,
+	-- 		s.mypromptbox,
+	-- 	},
+	-- 	s.mytasklist, -- Middle widget
+	-- 	{ -- Right widgets
+	-- 		layout = wibox.layout.fixed.horizontal,
+	-- 		wibox.widget.textbox(" I "),
+	-- 		network_usage_monitor,
+	-- 		wibox.widget.textbox(" I "),
+	-- 		volume_widget(),
+	-- 		mykeyboardlayout,
+	-- 		s.systray,
+	-- 		mytextclock,
+	-- 		ww,
+	-- 		-- s.mylayoutbox,
+	-- 	},
+	-- })
 end)
 
 -- {{{ Mouse bindings
