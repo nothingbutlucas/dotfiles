@@ -282,7 +282,7 @@ awful.screen.connect_for_each_screen(function(s)
 		end
 	else
 		if s.index == 1 then
-			awful.tag({ "1", "2", "3", "4", "·", "·", "·", "·", "·" }, s, awful.layout.layouts[1])
+			awful.tag({ "1", "2", "3", "4", "5", "·", "·", "·", "·" }, s, awful.layout.layouts[1])
 		else
 			awful.tag({ "~", "~" }, s, awful.layout.layouts[1])
 		end
@@ -603,6 +603,8 @@ root.keys(globalkeys)
 awful.rules.rules = {
 
 	-- Open microsoft teams for linux, evolution and slack on workspace 1
+	{ rule = { class = "session" }, properties = { screen = 1, tag = "1" } },
+	{ rule = { class = "telegram-desktop" }, properties = { screen = 1, tag = "1" } },
 	{ rule = { class = "teams-for-linux" }, properties = { screen = 1, tag = "1" } },
 	{ rule = { class = "Evolution" }, properties = { screen = 1, tag = "1" } },
 	{ rule = { class = "Slack" }, properties = { screen = 1, tag = "1" } },
@@ -611,11 +613,14 @@ awful.rules.rules = {
 	{ rule = { class = "Mullvad Browser" }, properties = { screen = 1, tag = "2" } },
 	{ rule = { class = "Brave-browser" }, properties = { screen = 1, tag = "2" } },
 	{ rule = { class = "librewolf" }, properties = { screen = 1, tag = "2" } },
+	{ rule = { class = "Navigator" }, properties = { screen = 1, tag = "2" } },
 	-- Open Kitty terminal and gnome-terminal on workspace 3
 	{ rule = { class = "kitty" }, properties = { screen = 1, tag = "3" } },
 	{ rule = { class = "Gnome-terminal" }, properties = { screen = 1, tag = "3" } },
 	-- Open datastudio on workspace 4, identificada por nombre no por clase
 	{ rule = { name = "datastudio" }, properties = { screen = 1, tag = "4" } },
+	{ rule = { name = "Blender" }, properties = { screen = 1, tag = "4" } },
+	{ rule = { name = "UltiMaker-Cura" }, properties = { screen = 1, tag = "5" } },
 
 	-- All clients will match this rule.
 	{
