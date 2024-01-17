@@ -16,6 +16,6 @@ weather=$(cat $FILE || echo "No weather info available")
 if [[ "$weather" == "Unknown"* ]]; then
 	echo ""
 else
-	echo "$weather"
+	echo " $weather "
 fi
 
