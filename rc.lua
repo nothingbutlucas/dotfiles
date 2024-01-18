@@ -242,6 +242,7 @@ end
 screen.connect_signal("property::geometry", set_wallpaper)
 
 awful.screen.connect_for_each_screen(function(s)
+	if s.index == 2 then
 	-- Set systray
 	-- s.systray = wibox.widget.systray()
 	-- s.systray.visible = true
@@ -351,6 +352,7 @@ awful.screen.connect_for_each_screen(function(s)
 	-- 		-- s.mylayoutbox,
 	-- 	},
 	-- })
+end
 end)
 
 -- {{{ Mouse bindings
