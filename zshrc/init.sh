@@ -59,7 +59,7 @@ export OPENSCADPATH=$HOME/.local/share/OpenSCAD/libraries/
 
 export CLIPBOARD_NOAUDIO=1
 export CLIPBOARD_EDITOR=nvim
-export CLIPBOARD_THEME=green
+export CLIPBOARD_THEME=lighthighcontrast
 
 # gum variables
 
