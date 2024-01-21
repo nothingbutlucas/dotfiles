@@ -225,11 +225,9 @@ awful.screen.connect_for_each_screen(function(s)
 	})
 end)
 
-root.buttons(gears.table.join(
-	awful.button({}, 3, function()
-		mymainmenu:toggle()
-	end)
-))
+root.buttons(gears.table.join(awful.button({}, 3, function()
+	mymainmenu:toggle()
+end)))
 
 globalkeys = gears.table.join(
 	-- Volume control
@@ -477,9 +475,9 @@ awful.rules.rules = {
 	-- Open datastudio on workspace 4, identificada por nombre no por clase
 	{ rule = { name = "datastudio" }, properties = { screen = 1, tag = "4" } },
 	{ rule = { class = "Blender" }, properties = { screen = 1, tag = "4" } },
-  -- Open Cura and Burpsuite on workspace 5
+	-- Open Cura and Burpsuite on workspace 5
 	{ rule = { class = "UltiMaker-Cura" }, properties = { screen = 1, tag = "5" } },
-  { rule = { class = "install4j-burp-StartBurp", properties = { screen = 1, tag = "5"} },
+	{ rule = { class = "install4j-burp-StartBurp", properties = { screen = 1, tag = "5" } } },
 
 	-- All clients will match this rule.
 	{
@@ -536,8 +534,7 @@ awful.rules.rules = {
 
 	-- Add titlebars to normal clients and dialogs
 	{ rule_any = { type = { "normal", "dialog" } }, properties = { titlebars_enabled = false } },
-
-}}
+}
 
 -- Center notifications
 for _, preset in pairs(naughty.config.presets) do
