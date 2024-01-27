@@ -32,11 +32,11 @@ sign_warn="${warn}[!]${nc}"
 sign_info="${info}[i]${nc}"
 sign_ask="${ask}[?]${nc}"
 sign_doing="${doing}[~]${nc}"
-sign_cmd="${cmd}[>]${nc}"
+sign_cmd="${cmd}[>]\$${nc}"
 sign_debug="${warn}[d]${nc}"
 
 error_logs=$(pwd)/error_logs.log
-dotfiles=(.bashrc .zshrc .tmux.conf .gitconfig .gitignore .Xdefaults rc.lua .picom .ideavimrc kitty)
+dotfiles=(.bashrc .zshrc .tmux.conf .gitconfig .gitignore .Xdefaults awesome .picom .ideavimrc kitty)
 
 quiet=0
 package="none"
@@ -72,7 +72,7 @@ function is_installed() {
 	program=$1
 	echo -e "${sign_good} Comprobando si tienes instalado ${program}..."
 	sleep 0.05
-	echo -e "${sign_cmd}$ command -v ${program} ${nc}"
+	echo -e "${sign_cmd} command -v ${program} ${nc}"
 	sleep 0.05
 	if command -v "${program}" 1>/dev/null 2>>"${error_logs}"; then
 		echo -e "${sign_info} ${program} está instalado"
@@ -89,7 +89,7 @@ function install() {
 		echo -e "${sign_good} Instalando ${program}..."
 		sleep 0.05
 		command="sudo ${package} install ${program} -y"
-		echo -e "${sign_cmd}$ ${command}${nc}"
+		echo -e "${sign_cmd} ${command}${nc}"
 		sleep 0.05
 		if "$command" 2>>"${error_logs}"; then
 			echo -e "${sign_good} ${program} ha sido instalado"
@@ -193,7 +193,7 @@ function plugins_zsh() {
 function zsh() {
 	echo "${sign_doing} Instalando zsh..."
 	command="sudo ${package} install zsh -y"
-	echo -e "${sign_cmd}$ ${command}${nc}"
+	echo -e "${sign_cmd} ${command}${nc}"
 	sleep 0.05
 	eval "$command" 2>>"${error_logs}"
 }
@@ -225,20 +225,22 @@ function backup() {
 			fi
 			echo ""
 		fi
-		if [ "$dotfile" = "rc.lua" ]; then
-			if [ -d ~/.config/awesome ]; then
-				if cp -r ~/.config/awesome ~/.config/backup-dotfiles/awesome.bak 2>>"${error_logs}"; then
+		if [ "$dotfile" = "awesome" ]; then
+			if [ -d "${HOME}/.config/awesome" ]; then
+				if mv "$HOME/.config/awesome" "$HOME/.config/backup-dotfiles/awesome.bak" 2>>"${error_logs}"; then
 					echo -e "${sign_good} ${dotfile} ha sido copiado a ~/.config/backup/awesome.bak"
 				else
 					echo -e "${sign_wrong} ${dotfile} no ha podido ser copiado a ~/.config/backup/awesome.bak"
 				fi
-				echo ""
+				echo
 			else
 				echo -e "${sign_warn} No tienes la carpeta ~/.config/awesome"
 			fi
 		fi
 	done
 }
+
+# Command appears to be unreachable. Check usage (or ignore if invoked indirectly)
 
 function dotfiles-installation() {
 	backup
@@ -254,23 +256,9 @@ function dotfiles-installation() {
 			fi
 		fi
 
-		if [ "$dotfile" == "rc.lua" ]; then
-			mkdir -p ~/.config/awesome
-			if rm ~/.config/awesome/rc.lua 2>>"${error_logs}"; then
-				echo -e "${sign_good} ${dotfile} ha sido borrado"
-			else
-				echo -e "${sign_wrong} ${dotfile} no ha podido ser borrado"
-			fi
-			dotfile_dir="/.config/awesome/rc.lua"
-		else
-			dotfile_dir="$dotfile"
-		fi
-
 		if [ "$dotfile" == "kitty" ]; then
 			mv ~/.config/kitty ~/.config/kitty_bak
 		fi
-
-		ln -s "${HOME}/dotfiles/$dotfile" "${HOME}/$dotfile_dir"
 
 		if [ $? == 0 ] 2>>"${error_logs}"; then
 			echo -e "${sign_good} ${dotfile} ha sido instalado"
@@ -283,21 +271,21 @@ function dotfiles-installation() {
 
 	done
 
-	rm -rf "${HOME}"/dotfiles/bashrc/aliases.sh
-	rm -rf "${HOME}"/dotfiles/bashrc/utils.sh
+	rm -rf "${HOME}/dotfiles/bashrc/aliases.sh"
+	rm -rf "${HOME}/dotfiles/bashrc/utils.sh"
 	ln -s "${HOME}/dotfiles/zshrc/aliases.sh" "${HOME}/dotfiles/bashrc/aliases.sh"
 	ln -s "${HOME}/dotfiles/zshrc/utils.sh" "${HOME}/dotfiles/bashrc/utils.sh"
 	ln -s "${HOME}/dotfiles/kitty" "${HOME}/.config/kitty"
 	ln -s "${HOME}/dotfiles/commit.sh" "${HOME}/.local/bin/commit.sh"
+	ln -s "${HOME}/dotfiles/awesome" "${HOME}/.config/awesome"
 	sleep 0.05
 }
 
-function tmux() {
-	command="sudo ${package} install tmux -y"
-	echo -e "${sign_good} Instalando tmux"
-	echo -e "${sign_cmd} ${command}${nc}"
-	sleep 0.05
+function kitty() {
+	command="curl -L https://sw.kovidgoyal.net/kitty/installer.sh | sh /dev/stdin"
+	echo -e "${sign_good} Instalando kitty"
 	eval "$command" 2>>"${error_logs}"
+	sleep 0.05
 }
 
 function lsd_i386() {
@@ -312,14 +300,22 @@ function lsd_i386() {
 }
 
 function lsd_amd64() {
-	command="wget https://github.com/Peltoche/lsd/releases/download/0.23.0/lsd_0.23.0_amd64.deb"
+	command="wget https://github.com/lsd-rs/lsd/releases/download/v1.0.0/lsd_1.0.0_amd64.deb"
 	echo -e "${sign_good} Instalando lsd"
 	eval "$command" 2>>"${error_logs}"
-	command="sudo dpkg -i lsd_0.23.0_amd64.deb"
+	command="sudo dpkg -i lsd_1.0.0_amd64.deb"
 	echo -e "${sign_cmd} ${command}${nc}"
 	eval "$command" 2>>"${error_logs}"
-	rm lsd_0.23.0_amd64.deb
+	rm lsd_1.0.0_amd64.deb
 	sleep 0.05
+}
+
+function lsd() {
+	echo "${sign_doing} Instalando lsd..."
+	command="sudo ${package} install lsd -y"
+	echo -e "${sign_cmd} ${command}${nc}"
+	sleep 0.05
+	eval "$command" 2>>"${error_logs}"
 }
 
 function salir() {
@@ -334,9 +330,9 @@ function main() {
 	PS3="[?]: "
 	echo -e "${sign_ask} Elige un número para instalar lo que quieras:\n"
 	if [[ ${package} = "none" ]]; then
-		programs=(backup powerlevel10k plugins_zsh dotfiles-installation lsd_i386 lsd_amd64 fonts salir)
+		programs=(backup powerlevel10k plugins_zsh dotfiles-installation lsd_i386 lsd_amd64 lsd fonts kitty salir)
 	else
-		programs=(zsh backup powerlevel10k mpv_youtube_dl dotfiles-installation tmux plugins_zsh lsd_i386 lsd_amd64 fonts batcat salir)
+		programs=(zsh backup powerlevel10k mpv_youtube_dl dotfiles-installation tmux plugins_zsh lsd_i386 lsd_amd64 lsd fonts kitty batcat salir)
 	fi
 	while [[ 1 -eq 1 ]]; do
 		select program in "${programs[@]}"; do
