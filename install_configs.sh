@@ -191,11 +191,7 @@ function plugins_zsh() {
 }
 
 function zsh() {
-	echo "${sign_doing} Instalando zsh..."
-	command="sudo ${package} install zsh -y"
-	echo -e "${sign_cmd} ${command}${nc}"
-	sleep 0.05
-	eval "$command" 2>>"${error_logs}"
+	install zsh
 }
 
 function powerlevel10k() {
@@ -206,11 +202,8 @@ function powerlevel10k() {
 }
 
 function mpv_youtube_dl() {
-	echo -e "${sign_doing} Instalando mpv y youtube-dl..."
-	command="sudo ${package} install mpv youtube-dl -y"
-	echo -e "${sign_cmd} ${command}${nc}"
-	sleep 0.05
-	eval "$command" 2>>"${error_logs}"
+	install mpv
+	install youtube-dl
 }
 
 function backup() {
@@ -311,11 +304,7 @@ function lsd_amd64() {
 }
 
 function lsd() {
-	echo "${sign_doing} Instalando lsd..."
-	command="sudo ${package} install lsd -y"
-	echo -e "${sign_cmd} ${command}${nc}"
-	sleep 0.05
-	eval "$command" 2>>"${error_logs}"
+	install "lsd"
 }
 
 function salir() {
@@ -326,13 +315,19 @@ function salir() {
 	exit 0
 }
 
+function es-keyboard() {
+	loadkeys es 2>/dev/null
+	setxkbmap es
+	sudo dpkg-reconfigure console-setup
+}
+
 function main() {
 	PS3="[?]: "
 	echo -e "${sign_ask} Elige un número para instalar lo que quieras:\n"
 	if [[ ${package} = "none" ]]; then
-		programs=(backup powerlevel10k plugins_zsh dotfiles-installation lsd_i386 lsd_amd64 lsd fonts kitty salir)
+		programs=(backup powerlevel10k plugins_zsh dotfiles-installation lsd_i386 lsd_amd64 lsd fonts kitty es-keyboard salir)
 	else
-		programs=(zsh backup powerlevel10k mpv_youtube_dl dotfiles-installation tmux plugins_zsh lsd_i386 lsd_amd64 lsd fonts kitty batcat salir)
+		programs=(zsh backup powerlevel10k mpv_youtube_dl dotfiles-installation tmux plugins_zsh lsd_i386 lsd_amd64 lsd fonts kitty batcat es-keyboard salir)
 	fi
 	while [[ 1 -eq 1 ]]; do
 		select program in "${programs[@]}"; do
