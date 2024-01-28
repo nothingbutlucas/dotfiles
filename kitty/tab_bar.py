@@ -13,24 +13,36 @@ import socket
 
 timer_id = None
 
+
 def is_connected():
     # https://stackoverflow.com/questions/20913411/test-if-an-internet-connection-is-present-in-python
     try:
         # connect to the host -- tells us if the host is actually
         # reachable
         sock = socket.create_connection(("1.1.1.1", 53))
+    except OSError:
+        return False
+    finally:
         if sock:
             sock.close()
-        return True
-    except OSError:
-        pass
+            return True
     return False
+
 
 def internet_string():
     if is_connected():
         return "直"
     else:
         return "睊"
+
+def weather_string():
+    # Show the contents of /tmp/weather.txt
+    try:
+        with open("/tmp/weather.txt", "r") as f:
+            return f.read()
+    except:
+        return "摒"
+
 
 def draw_tab(
     draw_data: DrawData,
@@ -62,7 +74,8 @@ def draw_right_status(draw_data: DrawData, screen: Screen) -> None:
     while True:
         if not cells:
             return
-        padding = screen.columns - screen.cursor.x - sum(len(c) + 4 for c in cells)
+        padding = screen.columns - screen.cursor.x - \
+            sum(len(c) + 4 for c in cells)
         if padding >= 0:
             break
         cells = cells[1:]
@@ -73,17 +86,20 @@ def draw_right_status(draw_data: DrawData, screen: Screen) -> None:
     tab_bg = as_rgb(int(draw_data.inactive_bg))
     tab_fg = as_rgb(int(draw_data.inactive_fg))
     tab_bg_active = as_rgb(int(draw_data.active_bg))
+
     for cell in cells:
         # Draw the separator
         screen.cursor.fg = tab_fg
-        screen.draw(" ⋮ ")
+        screen.draw(" | ")
         screen.cursor.fg = tab_bg_active
         screen.cursor.bg = tab_bg
         screen.draw(f"{cell}")
+
 
 def create_cells() -> list[str]:
     now = datetime.datetime.now()
     return [
         # internet_string(),
+        weather_string(),
         now.strftime("%d·%m·%Y ~ %H·%M"),
     ]
