@@ -219,3 +219,9 @@ function how-to-windows-on-grub() {
 	e_arrow "GRUB_DISABLE_OS_PROBER=false"
 	e_arrow "sudo update-grub"
 }
+
+function only_wpa() {
+	input_file=$1
+	output_file=$2
+	awk 'length($0) >=  8' "$input_file" > "$output_file"
+}
