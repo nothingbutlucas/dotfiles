@@ -332,7 +332,7 @@ detect-rounded-corners = true;
 # not passing '_NET_WM_OPACITY' of client windows to frame windows.
 #
 # detect-client-opacity = false
-detect-client-opacity = true;
+# detect-client-opacity = true;
 
 # Specify refresh rate of the screen. If not specified or 0, picom will
 # try detecting this with X RandR extension.
@@ -508,13 +508,13 @@ log-level = "info";
 #     set, and doesn't want certain window to cause unnecessary screen redirection,
 #     you can set this to `true`.
 #
-wintypes:
-{
-  normal = { fade = false; shadow = false; }
-  tooltip = { fade = true; shadow = true; opacity = 0.75; focus = true; full-shadow = false; };
-  dock = { shadow = false; }
-  dnd = { shadow = false; }
-  popup_menu = { opacity = 0.8; }
-  dropdown_menu = { opacity = 0.8; }
-};
+# wintypes:
+# {
+#   normal = { fade = false; shadow = false; }
+#   tooltip = { fade = true; shadow = true; opacity = 0.75; focus = true; full-shadow = false; };
+#   dock = { shadow = false; }
+#   dnd = { shadow = false; }
+#   popup_menu = { opacity = 0.8; }
+#   dropdown_menu = { opacity = 0.8; }
+# };
 
