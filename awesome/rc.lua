@@ -600,6 +600,7 @@ beautiful.useless_gap = 5
 
 -- Second screen
 awful.spawn.with_shell("xrandr --output HDMI-A-0 --primary --left-of DisplayPort-0")
+awful.spawn.with_shell("xrandr --output DisplayPort-0 --right-of HDMI-A-0")
 
 -- Autostart applications
 
