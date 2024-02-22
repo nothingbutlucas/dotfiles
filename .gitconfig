@@ -1,12 +1,12 @@
 # Este es el archivo de configuración de Git por usuario.
 [user]
 	name = nothingbutlucas
-	email = lucasblancodev@gmail.com
+	email = 69118979+nothingbutlucas@users.noreply.github.com
 [alias]
 	ec = config --global -e
 	co = checkout
 	br = branch
-	cm = commit -m
+	cm = commit -s -m
 	cam = commit -a -m
 	st = status
 	up = !git pull --rebase --prune $@ && git submodule update --init --recursive
@@ -45,3 +45,5 @@
 
 [init]
 	defaultBranch = main
+[commit]
+	gpgsign = true

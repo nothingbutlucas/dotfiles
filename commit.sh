@@ -10,4 +10,4 @@ test -n "$SCOPE" && SCOPE="($SCOPE)"
 SUMMARY=$(gum input --value="$TYPE$SCOPE: " --placeholder="Titulo de este cambio")
 DESCRIPTION=$(gum write --placeholder="Detalles de este cambio (CTRL+D para salir)")
 
-gum confirm "Commit changes?" && git commit -m "$SUMMARY" -m "$DESCRIPTION"
+gum confirm "Commit changes?" && git commit -s -m "$SUMMARY" -m "$DESCRIPTION"
