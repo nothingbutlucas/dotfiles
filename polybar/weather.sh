@@ -7,15 +7,10 @@ if [[ ! -f $FILE ]] || [[ $(find $FILE -mmin +60 -print -quit) ]]; then
  http_status=${weather: -3}
  weather=${weather::-3}
  if [[ $http_status == "200" ]]; then
-   echo "$weather" > $FILE
+   echo "$weather" | cut -c 1-26  > $FILE
  fi
 fi
 
 weather=$(cat $FILE || echo "No weather info available")
 
-if [[ "$weather" == "Unknown"* ]]; then
-	echo ""
-else
-	echo " $weather "
-fi
-
+echo " $weather "
