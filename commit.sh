@@ -7,7 +7,7 @@ SCOPE=$(gum input --placeholder="scope(opcional)")
 
 test -n "$SCOPE" && SCOPE="($SCOPE)"
 
-SUMMARY=$(gum input --value="$TYPE$SCOPE: " --placeholder="Titulo de este cambio")
-DESCRIPTION=$(gum write --placeholder="Detalles de este cambio (CTRL+D para salir)")
+SUMMARY=$(gum input --value="$TYPE$SCOPE: " --placeholder="Add an imperative subject line" --char-limit=50)
+DESCRIPTION=$(gum write --placeholder="Body that explain why not how (CTRL+D to exit)" --width=72)
 
 gum confirm "Commit changes?" && git commit -s -m "$SUMMARY" -m "$DESCRIPTION"
