@@ -185,13 +185,13 @@ awful.screen.connect_for_each_screen(function(s)
 
 	if is_fedora() then
 		if s.index == 2 then
-			awful.tag({ "1", "2", "3", "4", "·", "·", "·", "·", "·" }, s, awful.layout.layouts[1])
+			awful.tag({ "1", "2", "3", "4", "5", "6", "·", "·", "·" }, s, awful.layout.layouts[1])
 		else
 			awful.tag({ "~", "~" }, s, awful.layout.layouts[1])
 		end
 	else
 		if s.index == 1 then
-			awful.tag({ "1", "2", "3", "4", "5", "·", "·", "·", "·" }, s, awful.layout.layouts[1])
+			awful.tag({ "1", "2", "3", "4", "5", "6", "·", "·", "·" }, s, awful.layout.layouts[1])
 		else
 			awful.tag({ "~", "~" }, s, awful.layout.layouts[1])
 		end
@@ -479,8 +479,8 @@ awful.rules.rules = {
 	-- Open Cura and Burpsuite on workspace 5
 	{ rule = { class = "UltiMaker-Cura" }, properties = { screen = 1, tag = "5" } },
 	{ rule = { class = "install4j-burp-StartBurp"}, properties = { screen = 1, tag = "5" } } ,
-	{ rule = { class = "feishin" }, properties = { screen = 1, tag = "5" } },
-	{ rule = { class = "jellyfinmediaplayer"}, properties = { screen = 1, tag = "5"} },
+	{ rule = { class = "feishin" }, properties = { screen = 1, tag = "6" } },
+	{ rule = { class = "jellyfinmediaplayer"}, properties = { screen = 1, tag = "6"} },
 
 
 	-- All clients will match this rule.
