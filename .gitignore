@@ -6,3 +6,4 @@ bashrc/utils.sh
 bashrc/aliases.sh
 kitty/work
 error_logs.log
+.stignore
