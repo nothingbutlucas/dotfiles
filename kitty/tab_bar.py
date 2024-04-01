@@ -61,8 +61,9 @@ def draw_tab(
     draw_tab_with_powerline(
         draw_data, screen, tab, before, max_title_length, index, is_last, extra_data
     )
-    if is_last:
-        draw_right_status(draw_data, screen)
+    # Uncomment if we want the status like time or weather
+    # if is_last:
+    #     draw_right_status(draw_data, screen)
     return screen.cursor.x
 
 
@@ -100,6 +101,6 @@ def create_cells() -> list[str]:
     now = datetime.datetime.now()
     return [
         # internet_string(),
-        weather_string(),
-        now.strftime("%d·%m·%Y ~ %H·%M"),
+        # weather_string(),
+        # now.strftime("%d·%m·%Y ~ %H·%M"),
     ]
