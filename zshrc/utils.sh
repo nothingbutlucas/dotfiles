@@ -14,24 +14,37 @@ blue=$(tput setaf 38)
 # Headers and  Logging
 
 e_header() {
-  half_columns=$(($(tput cols) / 2))
-  args=$*
-  string_length=${#args}
-  n_of_characters=$(( half_columns - $((string_length / 2)) - 2))
-  equals_line=$(printf '%0.s=' $(seq 1 ${n_of_characters}))
-  printf "\n${bold}${purple}${equals_line} %s ${equals_line}${reset}\n" "$@"
+	half_columns=$(($(tput cols) / 2))
+	args=$*
+	string_length=${#args}
+	n_of_characters=$((half_columns - $((string_length / 2)) - 2))
+	equals_line=$(printf '%0.s=' $(seq 1 ${n_of_characters}))
+	printf "\n${bold}${purple}${equals_line} %s ${equals_line}${reset}\n" "$@"
 }
-e_arrow() { printf "➜ %s\n" "$*"
+e_arrow() {
+	printf "➜ %s\n" "$*"
 }
-e_success() { printf "${green}✔ %s${reset}\n" "$*"
+e_success() {
+	printf "${green}✔ %s${reset}\n" "$*"
 }
-e_error() { printf "${red}✖ %s${reset}\n" "$*"
+e_error() {
+	printf "${red}✖ %s${reset}\n" "$*"
 }
-e_warning() { printf "${orange}➜ %s${reset}\n" "$*"
+e_warning() {
+	printf "${orange}➜ %s${reset}\n" "$*"
 }
-e_underline() { printf "${underline}${bold}%s${reset}\n" "$*"
+e_underline() {
+	printf "${underline}${bold}%s${reset}\n" "$*"
 }
-e_bold() { printf "${bold}%s${reset}\n" "$*"
+e_bold() {
+	printf "${bold}%s${reset}\n" "$*"
 }
-e_note() { printf "${underline}${bold}${blue}Note:${reset}  ${blue}%s${reset}\n" "$*"
+e_note() {
+	printf "${underline}${bold}${blue}Note:${reset}  ${blue}%s${reset}\n" "$*"
+}
+
+say() {
+
+	echo "$*" | $HOME/.local/src/piper/piper --model $HOME/.local/src/piper/es_MX-claude-high.onnx --output-raw | aplay -r 22050 -f S16_LE -t raw
+
 }

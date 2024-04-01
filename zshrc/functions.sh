@@ -179,13 +179,13 @@ function rot13() {
 
 function count() {
 	number=$1
-  if [ -z "$2" ]; then
-    unit="s"
-  else
-    unit=$2
-  fi
+	if [ -z "$2" ]; then
+		unit="s"
+	else
+		unit=$2
+	fi
 	gum spin --timeout="${number}${unit}" sleep "${number}${unit}"
-  notify-send "Countdown" "Countdown of $number finished" -i /usr/share/images/vendor-logos/logo.svg
+	notify-send "Countdown" "Countdown of $number finished" -i /usr/share/images/vendor-logos/logo.svg
 }
 
 function how-to-decrypt() {
@@ -220,8 +220,17 @@ function how-to-windows-on-grub() {
 	e_arrow "sudo update-grub"
 }
 
+function how-to-gpg() {
+	e_arrow "gpg --list-secret-keys --keyid-format LONG"
+	while IFS= read -r line; do
+		while IFS= read -r line2; do
+			echo "$line $line2"
+		done < <(gpg --list-secret-keys --keyid-format LONG | grep "@" | awk '-F<' '{print $2}')
+	done < <(gpg --list-secret-keys --keyid-format LONG | grep "sec" | awk '{print $2}' | awk -F/ '{print $2}')
+}
+
 function only_wpa() {
 	input_file=$1
 	output_file=$2
-	awk 'length($0) >=  8' "$input_file" > "$output_file"
+	awk 'length($0) >=  8' "$input_file" >"$output_file"
 }
