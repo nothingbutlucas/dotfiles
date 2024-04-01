@@ -5,8 +5,8 @@
 wireguard_status=$(ip addr | grep "wg")
 
 if [[ "$wireguard_status" == "" ]]; then
-  echo ""
+  echo "󱐝"
 else
-  echo " "
+  echo "󰆧"
 fi
 

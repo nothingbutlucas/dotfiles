@@ -13,4 +13,4 @@ fi
 
 weather=$(cat $FILE || echo "No weather info available")
 
-echo " $weather "
+echo "$weather"
