@@ -185,13 +185,13 @@ awful.screen.connect_for_each_screen(function(s)
 
 	if is_fedora() then
 		if s.index == 2 then
-			awful.tag({ "1", "2", "3", "4", "5", "6", "·", "·", "·" }, s, awful.layout.layouts[1])
+			awful.tag({ "󰍥", "", "", "󰐫", "󰹜", "", "·", "·", "·" }, s, awful.layout.layouts[1])
 		else
 			awful.tag({ "~", "~" }, s, awful.layout.layouts[1])
 		end
 	else
 		if s.index == 1 then
-			awful.tag({ "1", "2", "3", "4", "5", "6", "·", "·", "·" }, s, awful.layout.layouts[1])
+			awful.tag({ "󰍥", "", "", "󰐫", "󰹜", "", "·", "·", "·" }, s, awful.layout.layouts[1])
 		else
 			awful.tag({ "~", "~" }, s, awful.layout.layouts[1])
 		end
@@ -458,29 +458,29 @@ root.keys(globalkeys)
 awful.rules.rules = {
 
 	-- Open microsoft teams for linux, evolution and slack on workspace 1
-	{ rule = { class = "session" }, properties = { screen = 1, tag = "1" } },
-	{ rule = { class = "telegram-desktop" }, properties = { screen = 1, tag = "1" } },
-	{ rule = { class = "teams-for-linux" }, properties = { screen = 1, tag = "1" } },
-	{ rule = { class = "Evolution" }, properties = { screen = 1, tag = "1" } },
-	{ rule = { class = "Slack" }, properties = { screen = 1, tag = "1" } },
-	{ rule = { class = "Ripcord"}, properties = { screen = 1, tag = "1" }},
+	{ rule = { class = "session" }, properties = { screen = 1, tag = "󰍥" } },
+	{ rule = { class = "telegram-desktop" }, properties = { screen = 1, tag = "󰍥" } },
+	{ rule = { class = "teams-for-linux" }, properties = { screen = 1, tag = "󰍥" } },
+	{ rule = { class = "Evolution" }, properties = { screen = 1, tag = "󰍥" } },
+	{ rule = { class = "Slack" }, properties = { screen = 1, tag = "󰍥" } },
+	{ rule = { class = "Ripcord"}, properties = { screen = 1, tag = "󰍥" }},
 	-- Open firefox, mullvad browser, brave and librewolf on workspace 2
-	{ rule = { class = "firefox" }, properties = { screen = 1, tag = "2" } },
-	{ rule = { class = "Mullvad Browser" }, properties = { screen = 1, tag = "2" } },
-	{ rule = { class = "Brave-browser" }, properties = { screen = 1, tag = "2" } },
-	{ rule = { class = "librewolf" }, properties = { screen = 1, tag = "2" } },
-	{ rule = { class = "Navigator" }, properties = { screen = 1, tag = "2" } },
+	{ rule = { class = "firefox" }, properties = { screen = 1, tag = "" } },
+	{ rule = { class = "Mullvad Browser" }, properties = { screen = 1, tag = "" } },
+	{ rule = { class = "Brave-browser" }, properties = { screen = 1, tag = "" } },
+	{ rule = { class = "librewolf" }, properties = { screen = 1, tag = "" } },
+	{ rule = { class = "Navigator" }, properties = { screen = 1, tag = "" } },
 	-- Open Kitty terminal and gnome-terminal on workspace 3
-	{ rule = { class = "kitty" }, properties = { screen = 1, tag = "3" } },
-	{ rule = { class = "Gnome-terminal" }, properties = { screen = 1, tag = "3" } },
+	{ rule = { class = "kitty" }, properties = { screen = 1, tag = "" } },
+	{ rule = { class = "Gnome-terminal" }, properties = { screen = 1, tag = "" } },
 	-- Open datastudio on workspace 4, identificada por nombre no por clase
-	{ rule = { name = "datastudio" }, properties = { screen = 1, tag = "4" } },
-	{ rule = { class = "Blender" }, properties = { screen = 1, tag = "4" } },
+	{ rule = { name = "datastudio" }, properties = { screen = 1, tag = "󰐫" } },
+	{ rule = { class = "Blender" }, properties = { screen = 1, tag = "󰐫" } },
 	-- Open Cura and Burpsuite on workspace 5
-	{ rule = { class = "UltiMaker-Cura" }, properties = { screen = 1, tag = "5" } },
-	{ rule = { class = "install4j-burp-StartBurp"}, properties = { screen = 1, tag = "5" } } ,
-	{ rule = { class = "feishin" }, properties = { screen = 1, tag = "6" } },
-	{ rule = { class = "jellyfinmediaplayer"}, properties = { screen = 1, tag = "6"} },
+	{ rule = { class = "UltiMaker-Cura" }, properties = { screen = 1, tag = "󰹜" } },
+	{ rule = { class = "install4j-burp-StartBurp"}, properties = { screen = 1, tag = "󰹜" } } ,
+	{ rule = { class = "feishin" }, properties = { screen = 1, tag = "" } },
+	{ rule = { class = "jellyfinmediaplayer"}, properties = { screen = 1, tag = ""} },
 
 
 	-- All clients will match this rule.
