@@ -463,7 +463,7 @@ awful.rules.rules = {
 	{ rule = { class = "teams-for-linux" }, properties = { screen = 1, tag = "󰍥" } },
 	{ rule = { class = "Evolution" }, properties = { screen = 1, tag = "󰍥" } },
 	{ rule = { class = "Slack" }, properties = { screen = 1, tag = "󰍥" } },
-	{ rule = { class = "Ripcord"}, properties = { screen = 1, tag = "󰍥" }},
+	{ rule = { class = "Ripcord" }, properties = { screen = 1, tag = "󰍥" } },
 	-- Open firefox, mullvad browser, brave and librewolf on workspace 2
 	{ rule = { class = "firefox" }, properties = { screen = 1, tag = "" } },
 	{ rule = { class = "Mullvad Browser" }, properties = { screen = 1, tag = "" } },
@@ -478,10 +478,11 @@ awful.rules.rules = {
 	{ rule = { class = "Blender" }, properties = { screen = 1, tag = "󰐫" } },
 	-- Open Cura and Burpsuite on workspace 5
 	{ rule = { class = "UltiMaker-Cura" }, properties = { screen = 1, tag = "󰹜" } },
-	{ rule = { class = "install4j-burp-StartBurp"}, properties = { screen = 1, tag = "󰹜" } } ,
+	{ rule = { class = "install4j-burp-StartBurp" }, properties = { screen = 1, tag = "󰹜" } },
+	-- Media on workspace 6
+	{ rule = { name = "YouTube - Brave" }, properties = { screen = 1, tag = "" } },
 	{ rule = { class = "feishin" }, properties = { screen = 1, tag = "" } },
-	{ rule = { class = "jellyfinmediaplayer"}, properties = { screen = 1, tag = ""} },
-
+	{ rule = { class = "jellyfinmediaplayer" }, properties = { screen = 1, tag = "" } },
 
 	-- All clients will match this rule.
 	{
