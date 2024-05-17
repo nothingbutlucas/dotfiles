@@ -41,6 +41,9 @@ dotfiles=(.bashrc .zshrc .tmux.conf .gitconfig .gitignore .Xdefaults awesome .pi
 quiet=0
 package="none"
 
+# TODO: Crear directorios de mullvad y Tor
+# TODO: Agregar instalación de mullvad y Tor
+
 trap ctrl_c INT
 
 function ctrl_c() {
@@ -206,6 +209,12 @@ function mpv_youtube_dl() {
 	install youtube-dl
 }
 
+function create_basic_folders(){
+	mkdir -p "$HOME/.config"
+	mkdir -p "$HOME/.local/src"
+	mkdir -p "$HOME/.local/bin"
+}
+
 function backup() {
 	echo -e "${sign_doing} Vamos a hacer un backup de tu configuración actual"
 	mkdir -p ~/.config/backup-dotfiles
@@ -237,20 +246,16 @@ function backup() {
 
 function dotfiles-installation() {
 	backup
+	create_basic_folders
 	echo -e "${sign_doing} Instalando los dotfiles"
 	sleep 0.05
 	for dotfile in "${dotfiles[@]}"; do
 
-		if [ -f "$HOME/$dotfile" ]; then
-			if rm "$HOME/$dotfile" 2>>"${error_logs}"; then
-				echo -e "${sign_good} ${dotfile} ha sido borrado"
-			else
-				echo -e "${sign_wrong} ${dotfile} no ha podido ser borrado"
-			fi
-		fi
-
 		if [ "$dotfile" == "kitty" ]; then
 			mv ~/.config/kitty ~/.config/kitty_bak
+			ln -sf "${HOME}/dotfiles/kitty" "${HOME}/.config/kitty"
+		elif [ -f "$HOME/$dotfile" ]; then
+			ln -sf "$HOME/dotfiles/$dotfile" "$HOME/$dotfile")
 		fi
 
 		if [ $? == 0 ] 2>>"${error_logs}"; then
@@ -264,19 +269,20 @@ function dotfiles-installation() {
 
 	done
 
-	rm -rf "${HOME}/dotfiles/bashrc/aliases.sh"
-	rm -rf "${HOME}/dotfiles/bashrc/utils.sh"
-	ln -s "${HOME}/dotfiles/zshrc/aliases.sh" "${HOME}/dotfiles/bashrc/aliases.sh"
-	ln -s "${HOME}/dotfiles/zshrc/utils.sh" "${HOME}/dotfiles/bashrc/utils.sh"
-	ln -s "${HOME}/dotfiles/kitty" "${HOME}/.config/kitty"
-	ln -s "${HOME}/dotfiles/commit.sh" "${HOME}/.local/bin/commit.sh"
-	ln -s "${HOME}/dotfiles/awesome" "${HOME}/.config/awesome"
+	ln -sf "${HOME}/dotfiles/zshrc/aliases.sh" "${HOME}/dotfiles/bashrc/aliases.sh"
+	ln -sf "${HOME}/dotfiles/zshrc/utils.sh" "${HOME}/dotfiles/bashrc/utils.sh"
+	ln -sf "${HOME}/dotfiles/awesome" "${HOME}/.config/awesome"
+	ln -sf "${HOME}/dotfiles/commit.sh" "${HOME}/.local/bin/commit.sh"
 	sleep 0.05
 }
 
 function kitty() {
-	command="curl -L https://sw.kovidgoyal.net/kitty/installer.sh | sh /dev/stdin"
 	echo -e "${sign_good} Instalando kitty"
+	command="curl -L https://sw.kovidgoyal.net/kitty/installer.sh > kitty_installer.sh"
+	eval "$command" 2>>"${error_logs}"
+	command="chmod 744 kitty_installer.sh"
+	eval "$command" 2>>"${error_logs}"
+	command="./kitty_installer.sh"
 	eval "$command" 2>>"${error_logs}"
 	sleep 0.05
 }
