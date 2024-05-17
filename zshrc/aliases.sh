@@ -2,7 +2,7 @@
 
 alias ..="cd .."
 alias cd..="cd .."
-alias c="bat"
+alias c="batcat"
 alias ls="lsd --hyperlink=auto --sort time"
 alias g="git"
 alias edit_aliases="cd ${HOME}/dotfiles/ && ls -la"

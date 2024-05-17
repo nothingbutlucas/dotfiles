@@ -234,3 +234,12 @@ function only_wpa() {
 	output_file=$2
 	awk 'length($0) >=  8' "$input_file" >"$output_file"
 }
+
+function write_temp(){
+	# Crear un archivo temporal
+	TEMP_FILE=$(mktemp)
+	# Desactivar la creación de archivos de respaldo, intercambio y deshacer
+	nvim --cmd "set nobackup" --cmd "set noswapfile" --cmd "set noundofile" "$TEMP_FILE"
+	# Eliminar el archivo temporal
+	rmk "$TEMP_FILE"
+}
