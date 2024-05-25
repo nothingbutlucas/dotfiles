@@ -106,6 +106,12 @@ function install() {
 	echo ""
 }
 
+function execute_command(){
+	command=$*
+	echo -e "${sign_cmd} ${command}${nc}"
+	eval "$command" 2>>"${error_logs}"
+}
+
 function pre_requisites() {
 	programs=(git wget curl unzip)
 	for program in "${programs[@]}"; do
@@ -255,7 +261,7 @@ function dotfiles-installation() {
 			mv ~/.config/kitty ~/.config/kitty_bak
 			ln -sf "${HOME}/dotfiles/kitty" "${HOME}/.config/kitty"
 		elif [ -f "$HOME/$dotfile" ]; then
-			ln -sf "$HOME/dotfiles/$dotfile" "$HOME/$dotfile")
+			ln -sf "$HOME/dotfiles/$dotfile" "$HOME/$dotfile"
 		fi
 
 		if [ $? == 0 ] 2>>"${error_logs}"; then
@@ -309,6 +315,40 @@ function lsd_amd64() {
 	sleep 0.05
 }
 
+function generate_gpg_key() {
+	echo -e "${sign_good} Generando clave GPG"
+	command="gpg --auto-key-locate nodefault,wkd --locate-keys $*"
+	execute_command "$command"
+	command="gpg --gen-key"
+	execute_command "$command"
+	command="gpg --sign-key $*"
+	execute_command "$command"
+}
+
+function check_gpg_key() {
+	gpg --fingerprint $* || (generate_gpg_key $* && check_gpg_key $*)
+}
+
+function mullvad() {
+	echo -e "${sign_good} Instalando Mullvad"
+	command="wget -O mullvad.tar.xz https://mullvad.net/en/download/browser/linux-x86_64/latest"
+	execute_command "$command"
+	command="wget mullvad.tar.xz.asc https://mullvad.net/en/download/browser/linux-x86_64/latest/signature"
+	execute_command "$command"
+	# Check gpg key or create one
+	check_gpg_key torbrowser@torproject.org
+	command="gpg --verify mullvad.tar.xz.asc || echo 'Invalid GPG signature' && exit 1"
+	execute_command "$command"
+	command="tar -xvzf mullvad.tar.xz"
+	execute_command "$command"
+	command="mv mullvad-browser $HOME/.local/src/"
+	execute_command "$command"
+	command="rm -rf mullvad.tar.xz"
+	execute_command "$command"
+	command="ln -sf $HOME/.local/src/mullvad-browser/Browser/Descargas $HOME/Descargas/mullvad"
+	execute_command "$command"
+}
+
 function lsd() {
 	install "lsd"
 }
@@ -322,9 +362,7 @@ function salir() {
 }
 
 function es-keyboard() {
-	loadkeys es 2>/dev/null
-	setxkbmap es
-	sudo dpkg-reconfigure console-setup
+	setxkbmap -model pc105 -layout latam
 }
 
 function main() {
